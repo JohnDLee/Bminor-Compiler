@@ -7,7 +7,7 @@ extern int yylex();
 extern char *yytext;
 
 
-char * strtok(token_t token);
+char * strtok(token_t token. char* yytext);
 
 int main(int argc, char* argv[] ) {
 
@@ -27,18 +27,28 @@ int main(int argc, char* argv[] ) {
     while(1) {
         token_t t = yylex();
         if(t==TOKEN_EOF) break;
-            printf("%20s | %s\n", strtok(t),yytext);
+            printf("%20s | %s\n", strtok(t), yytext);
     }
 }
 
 
-char * strtok(token_t token) {
+char * strtok(token_t token, char* yytext) {
     // tokens
     switch (token) {
         case TOKEN_EOF:
-            return "TOKEN_EOF";
+            break;
+        case TOKEN_KEYWORD:
+            return "KEYWORD";
+        case TOKEN_ID:
+            return "IDENTIFIER";
+        case TOKEN_STR:
+            return "STRING";
+        case TOKEN_CHAR:
+            return "CHARACTER";
+        case TOKEN_INT:
+            return "INTEGER";
         case TOKEN_ERROR:
-            return "TOKEN_ERROR";
+            return "ERROR";
         
         default:
             return "OTHER";
