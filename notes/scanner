@@ -1,0 +1,44 @@
+Whitespace
+    space, tabs(\t?), \n, \r
+
+Comments: 
+    /* ... */, // ...
+
+Keywords
+    array auto boolean char else false for function if integer print return string true void while
+
+Identifier
+    [a-zA-Z_][a-zA-Z_0-9]*
+    up to 255 characters, not including \0
+
+
+Literals
+    integer
+        [1-9][0-9]* | 0 -> up to 64 bit signed
+    boolean
+        true | false
+    char 
+        [ASCII] -> look up ascii characters. Could also contain \ codes
+    string
+        \".*\" -> could contain \n and other escapes so be careful
+        up to 255 characters, not including \0
+
+
+Special
+    
+    Colon: ":" -> after variable declaration 
+        ex. x: integer;
+    
+    Semicolon: ";" -> to conclude lines
+
+    brackets: "[]" -> contains array sizes
+        ex. a: array [5] integer;
+        BRACK_OPEN, BRACK_CLOSE
+
+    braces: "{}" -> contains array values
+        ex a: array [5] integer = {1,2,3,4,5};
+        Probably don't treat whole thing as one token, but as ARR_OPEN and ARR_CLOSE
+
+Operators
+    Refer to bminor
+
