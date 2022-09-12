@@ -2,6 +2,8 @@
 #include "token.h"
 %}
 
+
+
 DIGIT [0-9]
 LETTER [a-zA-Z]
 ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
@@ -12,45 +14,45 @@ ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
 
 
     /* Literals */
-(-|\+)?{DIGIT}+            { return TOKEN_INT_LIT; }
-'([^\\'\n]|\\.)'              { return TOKEN_CHAR_LIT; }
-\"([^\\\"\n]|\\.){0,255}\"        { return TOKEN_STR_LIT; }
+(-|\+)?{DIGIT}+                 { return TOKEN_INT_LIT; }
+'([^\\'\n]|\\.)'                { fixString(yytext);  
+                                  return TOKEN_CHAR_LIT; }
+\"([^\\\"\n]|\\.){0,255}\"      { fixString(yytext);  
+                                  return TOKEN_STR_LIT; }
 
     /* Comments */
-\/\/[^\n]*           /* skip C Comment */
-\/\*(([^\*])|(\*+[^\/\*]))*\*+\/   /* skip C++ Comment */
+\/\/[^\n]*                          /* skip C Comment */
+\/\*(([^\*])|(\*+[^\/\*]))*\*+\/    /* skip C++ Comment */
 \/\*([^\*]|(\*+[^\/\*]))*(\*+)?     { fprintf(stderr, "scan error> Comment was not closed.\n");
                                      return TOKEN_ERROR; }
-    /*(([^\*\/])|(\*+[^\/\*])|(\/+[^\*\/]))*\*+\/ { fprintf(stderr, "scan error> Comment was not opened.\n");
-                                     return TOKEN_ERROR; }*/
-
+    
     /* Expression Symbols */
-\(                   { return TOKEN_PARENTHESIS_OPEN; }
-\)                   { return TOKEN_PARENTHESIS_CLOSE; }
-\[                   { return TOKEN_BRACKET_OPEN; }
-\]                   { return TOKEN_BRACKET_CLOSE; }
-\{                   { return TOKEN_BRACE_OPEN; }
-\}                   { return TOKEN_BRACE_CLOSE; }
-\+\+                  { return TOKEN_INCREMENT; }
+\(                  { return TOKEN_PARENTHESIS_OPEN; }
+\)                  { return TOKEN_PARENTHESIS_CLOSE; }
+\[                  { return TOKEN_BRACKET_OPEN; }
+\]                  { return TOKEN_BRACKET_CLOSE; }
+\{                  { return TOKEN_BRACE_OPEN; }
+\}                  { return TOKEN_BRACE_CLOSE; }
+\+\+                { return TOKEN_INCREMENT; }
 --                  { return TOKEN_DECREMENT; }
-\^                   { return TOKEN_EXPONENT; }
+\^                  { return TOKEN_EXPONENT; }
 \*                  { return TOKEN_MULT; }
 \/                  { return TOKEN_DIVIDE; }
 %                   { return TOKEN_MODULUS; }
 \+                  { return TOKEN_ADD; }
 -                   { return TOKEN_SUB; }
 >=                  { return TOKEN_GTE; }
-\<=                  { return TOKEN_LTE; }
+\<=                 { return TOKEN_LTE; }
 ==                  { return TOKEN_EQ; }
 !=                  { return TOKEN_NOT_EQ; }
 >                   { return TOKEN_GT; }
-\<                   { return TOKEN_LT; }
+\<                  { return TOKEN_LT; }
 !                   { return TOKEN_NOT; }
 =                   { return TOKEN_ASSIGN; }
 ,                   { return TOKEN_COMMA; }
 :                   { return TOKEN_COLON; }
 ;                   { return TOKEN_SEMICOLON; }
-\|\|                  { return TOKEN_OR; }
+\|\|                { return TOKEN_OR; }
 &&                  { return TOKEN_AND; }
 
 
@@ -81,3 +83,37 @@ while               { return TOKEN_WHILE; }
 
 int yywrap() { return 1; }
 
+void fixString(char* yytext) {
+    /* Fixes string/character form */
+    char* src = yytext;
+    char* dest = yytext;
+    // remove first "
+    src++;
+    // check for null. shift src to destination. 
+    while (*src != '\0') {
+        
+        // if \ is encountered, determine next char
+        if (*src == '\\') {
+            *src++;
+            switch (*src)
+            {
+            case 'n':
+                *dest = '\n';
+                break;
+            case '0':
+                *dest = '\0';
+                break;
+            default:
+                *dest = *src;
+                break;
+            }
+        } else {
+            *dest = *src;
+        }
+        src++;
+        dest++;
+    }
+    // remove last "
+    *dest--;
+    *dest = '\0';
+}

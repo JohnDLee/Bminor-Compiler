@@ -1,3 +1,6 @@
+#ifndef TOKEN
+#define TOKEN
+
 typedef enum {
     TOKEN_EOF=0,
     // keywords
@@ -56,3 +59,7 @@ typedef enum {
     TOKEN_INT_LIT,
     TOKEN_ERROR
 } token_t;
+
+void fixString(char*);
+
+#endif

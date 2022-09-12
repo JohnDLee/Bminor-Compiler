@@ -11,8 +11,7 @@ extern char *yytext;
 
 char * tokToString(token_t token, char* yytext);
 void print1(char* token_str, char* yytext);
-void print2(char* token_str);
-char * fixString(char* yytext);
+
 
 int main(int argc, char* argv[] ) {
 
@@ -186,10 +185,10 @@ char * tokToString(token_t token, char* yytext) {
             break;
         // literals
         case TOKEN_STR_LIT:
-            print1("STRING_LITERAL", fixString(yytext));
+            print1("STRING_LITERAL", yytext);
             break;
         case TOKEN_CHAR_LIT:
-            print1("CHARACTER_LITERAL", fixString(yytext));
+            print1("CHARACTER_LITERAL", yytext);
             break;
         case TOKEN_INT_LIT:
             print1("INTEGER_LITERAL", yytext);
@@ -206,45 +205,4 @@ char * tokToString(token_t token, char* yytext) {
 
 void print1(char* token_str, char* yytext) {
     printf("%20s | %s\n", token_str, yytext);
-}
-
-void print2(char* token_str) {
-    printf("%20s | \n", token_str);
-}
-
-char* fixString(char* yytext) {
-    /* Fixes string/character form */
-    char* src = yytext;
-    char* dest = yytext;
-    // remove first "
-    src++;
-    // check for null. shift src to destination. 
-    while (*src != '\0') {
-        
-        // if \ is encountered, determine next char
-        if (*src == '\\') {
-            *src++;
-            switch (*src)
-            {
-            case 'n':
-                *dest = '\n';
-                break;
-            case '0':
-                *dest = '\0';
-                break;
-            default:
-                *dest = *src;
-                break;
-            }
-        } else {
-            *dest = *src;
-        }
-        src++;
-        dest++;
-    }
-    // remove last "
-    *dest--;
-    *dest = '\0';
-
-    return yytext;
 }
