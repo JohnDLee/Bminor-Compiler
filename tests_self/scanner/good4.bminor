@@ -1,0 +1,18 @@
+main: function integer () {
+    
+    if (true) {
+        print 1;
+    } else if (false) {
+        print 2;
+    } else{
+        print 3;
+    }
+
+    integer i;
+    for (i = 0; i < 100; i++ ) {
+        print i;
+    }
+    
+    return 0;
+
+}

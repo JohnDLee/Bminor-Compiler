@@ -2,22 +2,33 @@
 
 #include "token.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 extern FILE *yyin;
 extern int yylex();
 extern char *yytext;
 
 
-char * strtok(token_t token. char* yytext);
+char * tokToString(token_t token, char* yytext);
+void print1(char* token_str, char* yytext);
+void print2(char* token_str);
+char * fixString(char* yytext);
 
 int main(int argc, char* argv[] ) {
 
-    if (argc > 2) {
-        fprintf(stderr, "bminor> invalid input: too many arguments\nusage:\n\t./bminor <program.bminor>\n");
+    if (argc > 3) {
+        fprintf(stderr, "bminor> invalid input: too many arguments\nusage:\n\t./bminor -scan <program.bminor>\n");
         return 1;
     }
-    yyin = fopen(argv[1],"r");
+    if (strcmp(argv[1], "-scan") != 0) {
+        fprintf(stderr, "bminor> you must provide -scan as a flag\n");
+        return 1;
+    }
+
+
+    yyin = fopen(argv[2],"r");
     if(!yyin) {
-        printf("could not open program.c!\n");
+        fprintf(stderr, "bminor> could not open %s!\n", argv[2]);
         return 1;
     }
 
@@ -27,30 +38,213 @@ int main(int argc, char* argv[] ) {
     while(1) {
         token_t t = yylex();
         if(t==TOKEN_EOF) break;
-            printf("%20s | %s\n", strtok(t), yytext);
+        tokToString(t, yytext);
     }
 }
 
 
-char * strtok(token_t token, char* yytext) {
+char * tokToString(token_t token, char* yytext) {
+
     // tokens
     switch (token) {
         case TOKEN_EOF:
             break;
-        case TOKEN_KEYWORD:
-            return "KEYWORD";
-        case TOKEN_ID:
-            return "IDENTIFIER";
-        case TOKEN_STR:
-            return "STRING";
+        // keywords
+        case TOKEN_ARRAY:
+            print1("ARRAY", yytext);
+            break;
+        case TOKEN_AUTO:
+            print1("AUTO", yytext);
+            break;
+        case TOKEN_BOOLEAN:
+            print1("BOOLEAN", yytext);
+            break;
         case TOKEN_CHAR:
-            return "CHARACTER";
+            print1("CHAR", yytext);
+            break;
+        case TOKEN_ELSE:
+            print1("ELSE", yytext);
+            break;
+        case TOKEN_FALSE:
+            print1("FALSE", yytext);
+            break;
+        case TOKEN_FOR:
+            print1("FOR", yytext);
+            break;
+        case TOKEN_FUNCTION:
+            print1("FUNCTION", yytext);
+            break;
+        case TOKEN_IF:
+            print1("IF", yytext);
+            break;
         case TOKEN_INT:
-            return "INTEGER";
+            print1("INTEGER", yytext);
+            break;
+        case TOKEN_PRINT:
+            print1("PRINT", yytext);
+            break;
+        case TOKEN_RETURN:
+            print1("RETURN", yytext);
+            break;
+        case TOKEN_STRING:
+            print1("STRING", yytext);
+            break;
+        case TOKEN_TRUE:
+            print1("TRUE", yytext);
+            break;
+        case TOKEN_VOID:
+            print1("VOID", yytext);
+            break;
+        case TOKEN_WHILE:
+            print1("WHILE", yytext);
+            break;
+        // expression/symbol:
+        case TOKEN_PARENTHESIS_OPEN:
+            print1("PARENTHESIS_OPEN", yytext);
+            break;
+        case TOKEN_PARENTHESIS_CLOSE:
+            print1("PARENTHESIS_CLOSE", yytext);
+            break;
+        case TOKEN_BRACKET_OPEN:
+            print1("BRACKET_OPEN", yytext);
+            break;
+        case TOKEN_BRACKET_CLOSE:
+            print1("BRACKET_OPEN", yytext);
+            break;
+        case TOKEN_BRACE_OPEN:
+            print1("BRACE_OPEN", yytext);
+            break;
+        case TOKEN_BRACE_CLOSE:
+            print1("BRACE_CLOSE", yytext);
+            break;
+        case TOKEN_INCREMENT:
+            print1("INCREMENT", yytext);
+            break;
+        case TOKEN_DECREMENT:
+            print1("DECREMENT", yytext);
+            break;
+        case TOKEN_NOT:
+            print1("NOT", yytext);
+            break;
+        case TOKEN_EXPONENT:
+            print1("EXPONENTIATION", yytext);
+            break;
+        case TOKEN_MULT:
+            print1("MULTIPLY", yytext);
+            break;
+        case TOKEN_DIVIDE:
+            print1("DIVIDE", yytext);
+            break;
+        case TOKEN_MODULUS:
+            print1("MODULUS", yytext);
+            break;
+        case TOKEN_ADD:
+            print1("ADD", yytext);
+            break;
+        case TOKEN_SUB:
+            print1("SUBTRACT", yytext);
+            break;
+        case TOKEN_GT:
+            print1("GT", yytext);
+            break;
+        case TOKEN_LT:
+            print1("LT", yytext);
+            break;
+        case TOKEN_GTE:
+            print1("GTE", yytext);
+            break;
+        case TOKEN_LTE:
+            print1("LTE", yytext);
+            break;
+        case TOKEN_EQ:
+            print1("EQ", yytext);
+            break;
+        case TOKEN_NOT_EQ:
+            print1("NOT_EQ", yytext);
+            break;
+        case TOKEN_ASSIGN:
+            print1("ASSIGN", yytext);
+            break;
+        case TOKEN_COMMA:
+            print1("COMMA", yytext);
+            break;
+        case TOKEN_SEMICOLON:
+            print1("SEMICOLON", yytext);
+            break;
+        case TOKEN_COLON:
+            print1("COLON", yytext);
+            break;
+        case TOKEN_AND:
+            print1("AND", yytext);
+            break;
+        case TOKEN_OR:
+            print1("OR", yytext);
+            break;
+        // identifier
+        case TOKEN_ID:
+            print1("IDENTIFIER", yytext);
+            break;
+        // literals
+        case TOKEN_STR_LIT:
+            print1("STRING_LITERAL", fixString(yytext));
+            break;
+        case TOKEN_CHAR_LIT:
+            print1("CHARACTER_LITERAL", fixString(yytext));
+            break;
+        case TOKEN_INT_LIT:
+            print1("INTEGER_LITERAL", yytext);
+            break;
         case TOKEN_ERROR:
-            return "ERROR";
+            fprintf(stderr, "scan error> %s is not a valid token\n", yytext);
+            exit(1);
+            break;
         
         default:
             return "OTHER";
     }
+}
+
+void print1(char* token_str, char* yytext) {
+    printf("%20s | %s\n", token_str, yytext);
+}
+
+void print2(char* token_str) {
+    printf("%20s | \n", token_str);
+}
+
+char* fixString(char* yytext) {
+    /* Fixes string/character form */
+    char* src = yytext;
+    char* dest = yytext;
+    // remove first "
+    src++;
+    // check for null. shift src to destination. 
+    while (*src != '\0') {
+        
+        // if \ is encountered, determine next char
+        if (*src == '\\') {
+            *src++;
+            switch (*src)
+            {
+            case 'n':
+                *dest = '\n';
+                break;
+            case '0':
+                *dest = '\0';
+                break;
+            default:
+                *dest = *src;
+                break;
+            }
+        } else {
+            *dest = *src;
+        }
+        src++;
+        dest++;
+    }
+    // remove last "
+    *dest--;
+    *dest = '\0';
+
+    return yytext;
 }

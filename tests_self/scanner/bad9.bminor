@@ -1,0 +1,2 @@
+// # & can all occur in these comments but 
+&cannot& be in an identifier

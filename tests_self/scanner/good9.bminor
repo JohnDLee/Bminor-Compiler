@@ -1,0 +1,3 @@
+x=x++++1 // should  be valid tokens.
+x=x----1
+x=x+--1

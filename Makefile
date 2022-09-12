@@ -3,7 +3,7 @@
 # Purpose: Makefile to compile B-Minor Compiler
 
 # compile all
-all: bminor cur_test
+all: bminor
 
 
 ###########
@@ -24,8 +24,9 @@ scanner/main.o: scanner/main.c scanner/token.h
 scanner/lex.yy.o: scanner/lex.yy.c scanner/token.h
 	gcc scanner/lex.yy.c -c -o scanner/lex.yy.o
 
-cur_test: bminor
-	./bminor tests/test_types.bminor
+scan_test: bminor
+	./tests/scanner/run_all_tests.sh
+	./tests_self/scanner/run_all_tests.sh
 
 
 
@@ -33,3 +34,4 @@ cur_test: bminor
 
 clean:
 	rm -rf scanner/lex.yy.c scanner/main.o scanner/lex.yy.o bminor
+	rm -rf tests/scanner/*.out tests_self/scanner/*.out

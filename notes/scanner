@@ -42,3 +42,14 @@ Special
 Operators
     Refer to bminor
 
+
+
+
+Conflicts:
+
+    Comments & Divide & Multiply?
+        -Will it get resolved by parser?
+    
+    x+1 vs +1 literal (same for minus)
+
+    Do we just parse it out later?

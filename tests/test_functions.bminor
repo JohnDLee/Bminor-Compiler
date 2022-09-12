@@ -1,9 +1,0 @@
-square: function integer ( x: integer );
-
-main: function integer ( argc: integer, argv: array [] string ) = {
-    
-}
-
-square: function integer ( x: integer ) = {
-	return x^2;
-}

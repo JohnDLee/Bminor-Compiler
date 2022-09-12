@@ -1,0 +1,6 @@
+x: integer = -1;
+// Do we just parse it out later?
+x = x-1;
+x = x- -1
+x = -x;
+y: integer=-1;

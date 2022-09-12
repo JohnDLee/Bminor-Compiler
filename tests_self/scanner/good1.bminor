@@ -1,0 +1,15 @@
+x: integer;
+y: integer = 123;
+b: boolean = false;
+c: char = 'q';
+p: char = '\n';
+t: char = '\\';
+s: string  = "hello bminor\n\\\\";
+a: auto = 10;
+b: auto = "hello";
+c: auto = a < 100;
+z: integer = y * x + 3;
+a: array [5] integer = {1,2,3,4,5};
+a: array [10] auto = {1,"string", c}
+
+
