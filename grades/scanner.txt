@@ -1,0 +1,2363 @@
+=====STUDENT TESTS=====
+====Good Tests====
+===[good0.bminor Input]===
+/* comment */ */ */
+/* \n \n \t comment */
+/* /* comment inside comment */ */
+/********** this program should output mult divide 
+mu
+lt divide * / */
+===[good0.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+            MULTIPLY | *
+              DIVIDE | /
+            MULTIPLY | *
+              DIVIDE | /
+            MULTIPLY | *
+              DIVIDE | /
+
+
+
+
+===[good1.bminor Input]===
+x: integer;
+y: integer = 123;
+b: boolean = false;
+c: char = 'q';
+p: char = '\n';
+t: char = '\\';
+s: string  = "hello bminor\n\\\\";
+a: auto = 10;
+b: auto = "hello";
+c: auto = a < 100;
+z: integer = y * x + 3;
+a: array [5] integer = {1,2,3,4,5};
+a: array [10] auto = {1,"string", c}
+
+
+
+===[good1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+           SEMICOLON | ;
+          IDENTIFIER | y
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 123
+           SEMICOLON | ;
+          IDENTIFIER | b
+               COLON | :
+             BOOLEAN | boolean
+              ASSIGN | =
+               FALSE | false
+           SEMICOLON | ;
+          IDENTIFIER | c
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | q
+           SEMICOLON | ;
+          IDENTIFIER | p
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | 
+
+           SEMICOLON | ;
+          IDENTIFIER | t
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | \
+           SEMICOLON | ;
+          IDENTIFIER | s
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | hello bminor
+\\
+           SEMICOLON | ;
+          IDENTIFIER | a
+               COLON | :
+                AUTO | auto
+              ASSIGN | =
+     INTEGER_LITERAL | 10
+           SEMICOLON | ;
+          IDENTIFIER | b
+               COLON | :
+                AUTO | auto
+              ASSIGN | =
+      STRING_LITERAL | hello
+           SEMICOLON | ;
+          IDENTIFIER | c
+               COLON | :
+                AUTO | auto
+              ASSIGN | =
+          IDENTIFIER | a
+                  LT | <
+     INTEGER_LITERAL | 100
+           SEMICOLON | ;
+          IDENTIFIER | z
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+          IDENTIFIER | y
+            MULTIPLY | *
+          IDENTIFIER | x
+                 ADD | +
+     INTEGER_LITERAL | 3
+           SEMICOLON | ;
+          IDENTIFIER | a
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 5
+        BRACKET_OPEN | ]
+             INTEGER | integer
+              ASSIGN | =
+          BRACE_OPEN | {
+     INTEGER_LITERAL | 1
+               COMMA | ,
+     INTEGER_LITERAL | 2
+               COMMA | ,
+     INTEGER_LITERAL | 3
+               COMMA | ,
+     INTEGER_LITERAL | 4
+               COMMA | ,
+     INTEGER_LITERAL | 5
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+          IDENTIFIER | a
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 10
+        BRACKET_OPEN | ]
+                AUTO | auto
+              ASSIGN | =
+          BRACE_OPEN | {
+     INTEGER_LITERAL | 1
+               COMMA | ,
+      STRING_LITERAL | string
+               COMMA | ,
+          IDENTIFIER | c
+         BRACE_CLOSE | }
+
+
+
+
+===[good2.bminor Input]===
+woajkdopjsoam-awadks1234
+===[good2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | woajkdopjsoam
+            SUBTRACT | -
+          IDENTIFIER | awadks1234
+
+
+
+
+===[good3.bminor Input]===
+awijaiodjmslamdklnjaoiwmneioojoijaiosmkldanznxlkawsd___alkwnjdlk_AW_D_A_DW_A_DA_S_D_AW_D_ASDkalnjwokdajionsjkndajinwijnadjonsoaindskoadsaiodjwoiajdlkmskaljioxdjaioszmkajdoiwjmaldmsklmnaodsjioadjlkwmdalkmsokdjoaimwklmdaokjnjoismlkandiowjnamlksmdlasimdnoainwiodanw lmkndmaklnwlkdnwlkanmdslamoisjdaokwjmklS
+===[good3.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | awijaiodjmslamdklnjaoiwmneioojoijaiosmkldanznxlkawsd___alkwnjdlk_AW_D_A_DW_A_DA_S_D_AW_D_ASDkalnjwokdajionsjkndajinwijnadjonsoaindskoadsaiodjwoiajdlkmskaljioxdjaioszmkajdoiwjmaldmsklmnaodsjioadjlkwmdalkmsokdjoaimwklmdaokjnjoismlkandiowjnamlksmdlasimdnoain
+          IDENTIFIER | wiodanw
+          IDENTIFIER | lmkndmaklnwlkdnwlkanmdslamoisjdaokwjmklS
+
+
+
+
+===[good4.bminor Input]===
+main: function integer () {
+    
+    if (true) {
+        print 1;
+    } else if (false) {
+        print 2;
+    } else{
+        print 3;
+    }
+
+    integer i;
+    for (i = 0; i < 100; i++ ) {
+        print i;
+    }
+    
+    return 0;
+
+}
+===[good4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+                  IF | if
+    PARENTHESIS_OPEN | (
+                TRUE | true
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+     INTEGER_LITERAL | 1
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+                  IF | if
+    PARENTHESIS_OPEN | (
+               FALSE | false
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+     INTEGER_LITERAL | 2
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+          BRACE_OPEN | {
+               PRINT | print
+     INTEGER_LITERAL | 3
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+             INTEGER | integer
+          IDENTIFIER | i
+           SEMICOLON | ;
+                 FOR | for
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | i
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | i
+                  LT | <
+     INTEGER_LITERAL | 100
+           SEMICOLON | ;
+          IDENTIFIER | i
+           INCREMENT | ++
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+          IDENTIFIER | i
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+              RETURN | return
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good5.bminor Input]===
+main: function integer () {
+    x: integer = 0;
+    if (x >= 1) {
+        print x;
+    } else if (x > = 0) {
+        print x,3;
+    } else if (x <= 0 ) {
+        print -4;
+    }
+    else
+    if (3 != 4) {
+        return !1;
+    }
+    else if (1 == 4) {
+        return -x;
+    }
+
+    return 0;
+
+}
+===[good5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+                 GTE | >=
+     INTEGER_LITERAL | 1
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+          IDENTIFIER | x
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+                  GT | >
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+          IDENTIFIER | x
+               COMMA | ,
+     INTEGER_LITERAL | 3
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+                 LTE | <=
+     INTEGER_LITERAL | 0
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+     INTEGER_LITERAL | -4
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+                  IF | if
+    PARENTHESIS_OPEN | (
+     INTEGER_LITERAL | 3
+              NOT_EQ | !=
+     INTEGER_LITERAL | 4
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+              RETURN | return
+                 NOT | !
+     INTEGER_LITERAL | 1
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+                  IF | if
+    PARENTHESIS_OPEN | (
+     INTEGER_LITERAL | 1
+                  EQ | ==
+     INTEGER_LITERAL | 4
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+              RETURN | return
+            SUBTRACT | -
+          IDENTIFIER | x
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+              RETURN | return
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good6.bminor Input]===
+main: function integer () {
+    x: integer = 1;
+    x++;
+    x = x+1;
+
+    return 0;
+}
+===[good6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 1
+           SEMICOLON | ;
+          IDENTIFIER | x
+           INCREMENT | ++
+           SEMICOLON | ;
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+     INTEGER_LITERAL | +1
+           SEMICOLON | ;
+              RETURN | return
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good7.bminor Input]===
+x: integer = -1;
+// Do we just parse it out later?
+x = x-1;
+x = x- -1
+x = -x;
+y: integer=-1;
+
+===[good7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | -1
+           SEMICOLON | ;
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+     INTEGER_LITERAL | -1
+           SEMICOLON | ;
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+            SUBTRACT | -
+     INTEGER_LITERAL | -1
+          IDENTIFIER | x
+              ASSIGN | =
+            SUBTRACT | -
+          IDENTIFIER | x
+           SEMICOLON | ;
+          IDENTIFIER | y
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | -1
+           SEMICOLON | ;
+
+
+
+
+===[good8.bminor Input]===
+x=1--1
+x=-1-1
+x=x++ + 1
+===[good8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+              ASSIGN | =
+     INTEGER_LITERAL | 1
+           DECREMENT | --
+     INTEGER_LITERAL | 1
+          IDENTIFIER | x
+              ASSIGN | =
+     INTEGER_LITERAL | -1
+     INTEGER_LITERAL | -1
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+           INCREMENT | ++
+                 ADD | +
+     INTEGER_LITERAL | 1
+
+
+
+
+===[good9.bminor Input]===
+x=x++++1 // should  be valid tokens.
+x=x----1
+x=x+--1
+
+===[good9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+           INCREMENT | ++
+           INCREMENT | ++
+     INTEGER_LITERAL | 1
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+           DECREMENT | --
+           DECREMENT | --
+     INTEGER_LITERAL | 1
+          IDENTIFIER | x
+              ASSIGN | =
+          IDENTIFIER | x
+                 ADD | +
+           DECREMENT | --
+     INTEGER_LITERAL | 1
+
+
+
+
+====Bad Tests====
+===[bad0.bminor Input]===
+/* comment is not closed
+
+===[bad0.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> Comment was not closed.
+scan error> /* comment is not closed
+ is not a valid token
+
+
+
+===[bad1.bminor Input]===
+x: char = '\n\n'
+===[bad1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+
+scan error> ' is not a valid token
+
+
+
+===[bad2.bminor Input]===
+x: char = '
+'
+===[bad2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+
+scan error> ' is not a valid token
+
+
+
+===[bad4.bminor Input]===
+x: char = '\n
+
+t: char = '\n'
+===[bad4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+
+scan error> ' is not a valid token
+
+
+
+===[bad5.bminor Input]===
+x: string = "this is an incomplete string';
+
+y: string = "huh?
+===[bad5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+              STRING | string
+              ASSIGN | =
+
+scan error> " is not a valid token
+
+
+
+===[bad6.bminor Input]===
+"'"'
+===[bad6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+      STRING_LITERAL | '
+
+scan error> ' is not a valid token
+
+
+
+===[bad7.bminor Input]===
+/* // /* */ // should work
+this should also work */
+Poor me, I am out of test ideas
+x: dollar = $1000000
+===[bad7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | this
+          IDENTIFIER | should
+          IDENTIFIER | also
+          IDENTIFIER | work
+            MULTIPLY | *
+              DIVIDE | /
+          IDENTIFIER | Poor
+          IDENTIFIER | me
+               COMMA | ,
+          IDENTIFIER | I
+          IDENTIFIER | am
+          IDENTIFIER | out
+          IDENTIFIER | of
+          IDENTIFIER | test
+          IDENTIFIER | ideas
+          IDENTIFIER | x
+               COLON | :
+          IDENTIFIER | dollar
+              ASSIGN | =
+
+scan error> $ is not a valid token
+
+
+
+===[bad8.bminor Input]===
+I don't like scanners:(
+===[bad8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | I
+          IDENTIFIER | don
+
+scan error> ' is not a valid token
+
+
+
+===[bad9.bminor Input]===
+// # & can all occur in these comments but 
+&cannot& be in an identifier
+===[bad9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> & is not a valid token
+
+
+
+=====HIDDEN TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+// Easy comment
+/* Easy comment */
+
+===[good1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+
+
+
+===[good10.bminor Input]===
+// Modulus operator
+15%3
+
+// Exponentiation operator
+2^6
+
+// Negation
+-value
+
+// Postincrement and postdecrement
+number++;
+
+number--;
+
+===[good10.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+     INTEGER_LITERAL | 15
+             MODULUS | %
+     INTEGER_LITERAL | 3
+     INTEGER_LITERAL | 2
+      EXPONENTIATION | ^
+     INTEGER_LITERAL | 6
+            SUBTRACT | -
+          IDENTIFIER | value
+          IDENTIFIER | number
+           INCREMENT | ++
+           SEMICOLON | ;
+          IDENTIFIER | number
+           DECREMENT | --
+           SEMICOLON | ;
+
+
+
+
+===[good3.bminor Input]===
+// Identifiers
+CamelCase
+lower_case
+skiddo23
+B4UFLY
+i
+x15
+
+
+===[good3.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | CamelCase
+          IDENTIFIER | lower_case
+          IDENTIFIER | skiddo23
+          IDENTIFIER | B4UFLY
+          IDENTIFIER | i
+          IDENTIFIER | x15
+
+
+
+
+===[good5.bminor Input]===
+// Various bits of punctuation
+, : ; ( ) [ ] { }
+
+
+===[good5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+               COMMA | ,
+               COLON | :
+           SEMICOLON | ;
+    PARENTHESIS_OPEN | (
+   PARENTHESIS_CLOSE | )
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+          BRACE_OPEN | {
+         BRACE_CLOSE | }
+
+
+
+
+===[good6.bminor Input]===
+// Complete function prototype
+main: function integer ( argc: integer, argv: array [] string );
+
+
+===[good6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | argc
+               COLON | :
+             INTEGER | integer
+               COMMA | ,
+          IDENTIFIER | argv
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+              STRING | string
+   PARENTHESIS_CLOSE | )
+           SEMICOLON | ;
+
+
+
+
+===[good7.bminor Input]===
+// Nested statements
+if( x<15 ) {
+    print "small";
+} else {
+    print "large!";
+}
+
+
+===[good7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+                  LT | <
+     INTEGER_LITERAL | 15
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | small
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                ELSE | else
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | large!
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good8.bminor Input]===
+// Valid integers
+0
+1024
+-512
++256
+
+
+===[good8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+     INTEGER_LITERAL | 0
+     INTEGER_LITERAL | 1024
+     INTEGER_LITERAL | -512
+     INTEGER_LITERAL | +256
+
+
+
+
+===[good2.bminor Input]===
+////* Harder comment ***/
+/******************/
+/*
+This one works too.
+*/
+/***************
+Also a good comment.
+****************/
+// comment // comment // comment
+
+
+===[good2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+
+
+
+===[good4.bminor Input]===
+// Equality Operators
+== != <= < > >=
+// Ternary Tokens
+? :
+
+===[good4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+                  EQ | ==
+              NOT_EQ | !=
+                 LTE | <=
+                  LT | <
+                  GT | >
+                 GTE | >=
+
+scan error> ? is not a valid token
+
+
+
+===[good9.bminor Input]===
+// Type Keywords
+array
+boolean
+char
+string
+void
+integer
+auto
+
+===[good9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+               ARRAY | array
+             BOOLEAN | boolean
+                CHAR | char
+              STRING | string
+                VOID | void
+             INTEGER | integer
+                AUTO | auto
+
+
+
+
+====Bad Tests====
+===[bad1.bminor Input]===
+"unmatched string""
+
+===[bad1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+      STRING_LITERAL | unmatched string
+
+scan error> " is not a valid token
+
+
+
+===[bad10.bminor Input]===
+#compilers // No hashtags in B-minor
+
+===[bad10.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> # is not a valid token
+
+
+
+===[bad2.bminor Input]===
+"unterminated \"
+
+
+===[bad2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> " is not a valid token
+
+
+
+===[bad3.bminor Input]===
+never started"
+
+
+
+
+
+
+===[bad3.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | never
+          IDENTIFIER | started
+
+scan error> " is not a valid token
+
+
+
+===[bad4.bminor Input]===
+'character?' // Character too long.
+
+===[bad4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad5.bminor Input]===
+'' // Empty character not allowed.
+
+===[bad5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad8.bminor Input]===
+'' // Empty character not allowed.
+
+===[bad8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad9.bminor Input]===
+3.141592654 // No floating point
+
+===[bad9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+     INTEGER_LITERAL | 3
+
+scan error> . is not a valid token
+
+
+
+===[bad6.bminor Input]===
+~tilde // Invalid symbol
+
+===[bad6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ~ is not a valid token
+
+
+
+===[bad7.bminor Input]===
+/* Is this a valid comment */ @ */
+
+
+===[bad7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> @ is not a valid token
+
+
+
+=====COMMON TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+// just runs all basic tokens
+//
+/* comment */
+array 
+boolean 
+char 
+else 
+false 
+for 
+function 
+if 
+integer 
+print 
+return 
+string 
+true
+void
+while
+:
+;
+,
+[
+]
+{
+}
+(
+)
+=
+^
++
+-
+++
+--
+*
+/
+%
+==
+>=
+<=
+<
+>
+!=
+a
+ab
+ab3
+ab3a
+12314
+1
+12
+123
+'A'
+""
+"a"
+"aa"
+
+===[good1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+               ARRAY | array
+             BOOLEAN | boolean
+                CHAR | char
+                ELSE | else
+               FALSE | false
+                 FOR | for
+            FUNCTION | function
+                  IF | if
+             INTEGER | integer
+               PRINT | print
+              RETURN | return
+              STRING | string
+                TRUE | true
+                VOID | void
+               WHILE | while
+               COLON | :
+           SEMICOLON | ;
+               COMMA | ,
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+          BRACE_OPEN | {
+         BRACE_CLOSE | }
+    PARENTHESIS_OPEN | (
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+      EXPONENTIATION | ^
+                 ADD | +
+            SUBTRACT | -
+           INCREMENT | ++
+           DECREMENT | --
+            MULTIPLY | *
+              DIVIDE | /
+             MODULUS | %
+                  EQ | ==
+                 GTE | >=
+                 LTE | <=
+                  LT | <
+                  GT | >
+              NOT_EQ | !=
+          IDENTIFIER | a
+          IDENTIFIER | ab
+          IDENTIFIER | ab3
+          IDENTIFIER | ab3a
+     INTEGER_LITERAL | 12314
+     INTEGER_LITERAL | 1
+     INTEGER_LITERAL | 12
+     INTEGER_LITERAL | 123
+   CHARACTER_LITERAL | A
+      STRING_LITERAL | 
+      STRING_LITERAL | a
+      STRING_LITERAL | aa
+
+
+
+
+===[good10.bminor Input]===
+/* tests some more constructs in bminor */
+z = -x; // unary negation
+x^2; //exponantiotion
+//simple test cases
+x ^ 2
+z != x % 2
+z = 5 + 6;
+z = 5 * 6;
+z = 5 - 6;
+z = 5 / 6;
+q++;
+z--;
+z = 7 + 7 - z;
+
+
+===[good10.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | z
+              ASSIGN | =
+            SUBTRACT | -
+          IDENTIFIER | x
+           SEMICOLON | ;
+          IDENTIFIER | x
+      EXPONENTIATION | ^
+     INTEGER_LITERAL | 2
+           SEMICOLON | ;
+          IDENTIFIER | x
+      EXPONENTIATION | ^
+     INTEGER_LITERAL | 2
+          IDENTIFIER | z
+              NOT_EQ | !=
+          IDENTIFIER | x
+             MODULUS | %
+     INTEGER_LITERAL | 2
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+                 ADD | +
+     INTEGER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+            MULTIPLY | *
+     INTEGER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+            SUBTRACT | -
+     INTEGER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+              DIVIDE | /
+     INTEGER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | q
+           INCREMENT | ++
+           SEMICOLON | ;
+          IDENTIFIER | z
+           DECREMENT | --
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 7
+                 ADD | +
+     INTEGER_LITERAL | 7
+            SUBTRACT | -
+          IDENTIFIER | z
+           SEMICOLON | ;
+
+
+
+
+===[good11.bminor Input]===
+// some more complicated corner cases
+z = -(5 * 4);
+z = 15 + 5 - 4*3/7;
+z = x + (y * 5 - (4 + 20/v) - 15) % 6 + z; //long integer expr
+z+++; // these will cause parsing errors
+w---;
+
+
+===[good11.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | z
+              ASSIGN | =
+            SUBTRACT | -
+    PARENTHESIS_OPEN | (
+     INTEGER_LITERAL | 5
+            MULTIPLY | *
+     INTEGER_LITERAL | 4
+   PARENTHESIS_CLOSE | )
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+     INTEGER_LITERAL | 15
+                 ADD | +
+     INTEGER_LITERAL | 5
+            SUBTRACT | -
+     INTEGER_LITERAL | 4
+            MULTIPLY | *
+     INTEGER_LITERAL | 3
+              DIVIDE | /
+     INTEGER_LITERAL | 7
+           SEMICOLON | ;
+          IDENTIFIER | z
+              ASSIGN | =
+          IDENTIFIER | x
+                 ADD | +
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | y
+            MULTIPLY | *
+     INTEGER_LITERAL | 5
+            SUBTRACT | -
+    PARENTHESIS_OPEN | (
+     INTEGER_LITERAL | 4
+                 ADD | +
+     INTEGER_LITERAL | 20
+              DIVIDE | /
+          IDENTIFIER | v
+   PARENTHESIS_CLOSE | )
+            SUBTRACT | -
+     INTEGER_LITERAL | 15
+   PARENTHESIS_CLOSE | )
+             MODULUS | %
+     INTEGER_LITERAL | 6
+                 ADD | +
+          IDENTIFIER | z
+           SEMICOLON | ;
+          IDENTIFIER | z
+           INCREMENT | ++
+                 ADD | +
+           SEMICOLON | ;
+          IDENTIFIER | w
+           DECREMENT | --
+            SUBTRACT | -
+           SEMICOLON | ;
+
+
+
+
+===[good12.bminor Input]===
+//tests the for/print keyword and while keyword
+x:integer;
+for(x = 0; x < 5; x++)
+{
+	print "counting: ", x;
+}
+a:integer = 0;
+while(a > 0)
+{
+	a--;
+}
+
+
+
+===[good12.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+           SEMICOLON | ;
+                 FOR | for
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | x
+                  LT | <
+     INTEGER_LITERAL | 5
+           SEMICOLON | ;
+          IDENTIFIER | x
+           INCREMENT | ++
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | counting: 
+               COMMA | ,
+          IDENTIFIER | x
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+          IDENTIFIER | a
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+               WHILE | while
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                  GT | >
+     INTEGER_LITERAL | 0
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | a
+           DECREMENT | --
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good13.bminor Input]===
+//test some odd identifier names
+ident55
+ident55_
+ident__55__
+thisIsAReallyReallyLongIdentifierNameThatHasTonsOfLettersInIt = 7
+variable_names_may_contain_underscores_
+_variables_can_start_with_an_underscore_67
+7minus5 
+
+===[good13.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | ident55
+          IDENTIFIER | ident55_
+          IDENTIFIER | ident__55__
+          IDENTIFIER | thisIsAReallyReallyLongIdentifierNameThatHasTonsOfLettersInIt
+              ASSIGN | =
+     INTEGER_LITERAL | 7
+          IDENTIFIER | variable_names_may_contain_underscores_
+          IDENTIFIER | _variables_can_start_with_an_underscore_67
+     INTEGER_LITERAL | 7
+          IDENTIFIER | minus5
+
+
+
+
+===[good14.bminor Input]===
+main: function integer ( argc: integer, argv: array [] string ) =
+{
+}
+boolFunction: function boolean(intVar:integer) =
+{
+	return intVar > 5;
+}
+intFunction: function integer(integer n) =
+{
+	total:integer = 0;
+	int count;
+	for(count = 0; count < n+1; count++)
+	{
+		total = total + count;
+	
+}
+
+
+===[good14.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | argc
+               COLON | :
+             INTEGER | integer
+               COMMA | ,
+          IDENTIFIER | argv
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+              STRING | string
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+          BRACE_OPEN | {
+         BRACE_CLOSE | }
+          IDENTIFIER | boolFunction
+               COLON | :
+            FUNCTION | function
+             BOOLEAN | boolean
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | intVar
+               COLON | :
+             INTEGER | integer
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+          BRACE_OPEN | {
+              RETURN | return
+          IDENTIFIER | intVar
+                  GT | >
+     INTEGER_LITERAL | 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+          IDENTIFIER | intFunction
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+             INTEGER | integer
+          IDENTIFIER | n
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+          BRACE_OPEN | {
+          IDENTIFIER | total
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | int
+          IDENTIFIER | count
+           SEMICOLON | ;
+                 FOR | for
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | count
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | count
+                  LT | <
+          IDENTIFIER | n
+     INTEGER_LITERAL | +1
+           SEMICOLON | ;
+          IDENTIFIER | count
+           INCREMENT | ++
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | total
+              ASSIGN | =
+          IDENTIFIER | total
+                 ADD | +
+          IDENTIFIER | count
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good15.bminor Input]===
+intFunction: function integer(intVar:integer, boolVar: boolean)
+{
+	if(boolVar)
+	{
+		intVar = intVar * 2;
+	}
+	return intVar;
+}
+// finds the largest value in the array
+getLargest: function integer(intArrVar:array [] integer, int len) =
+{
+	largest:integer = 0;
+	x:integer;
+	for(x = 0; x < len; x++)
+	{
+		if(intArrVar[x] > largest)
+		{
+			largest = intArrVar[x];
+		}
+	}
+	return largest;
+		
+}
+
+main: function integer ( argc: integer, argv: array [] string ) =
+{
+	b:array [10] integer = {0,1,2,3,4,5};
+	b[4] = 6;
+	i:integer;
+	z:integer = intFunction(i, true);
+	print intArrFunction(v, z);
+}
+
+===[good15.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | intFunction
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | intVar
+               COLON | :
+             INTEGER | integer
+               COMMA | ,
+          IDENTIFIER | boolVar
+               COLON | :
+             BOOLEAN | boolean
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | boolVar
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | intVar
+              ASSIGN | =
+          IDENTIFIER | intVar
+            MULTIPLY | *
+     INTEGER_LITERAL | 2
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+              RETURN | return
+          IDENTIFIER | intVar
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+          IDENTIFIER | getLargest
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | intArrVar
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+             INTEGER | integer
+               COMMA | ,
+          IDENTIFIER | int
+          IDENTIFIER | len
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+          BRACE_OPEN | {
+          IDENTIFIER | largest
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | x
+               COLON | :
+             INTEGER | integer
+           SEMICOLON | ;
+                 FOR | for
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | x
+              ASSIGN | =
+     INTEGER_LITERAL | 0
+           SEMICOLON | ;
+          IDENTIFIER | x
+                  LT | <
+          IDENTIFIER | len
+           SEMICOLON | ;
+          IDENTIFIER | x
+           INCREMENT | ++
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | intArrVar
+        BRACKET_OPEN | [
+          IDENTIFIER | x
+        BRACKET_OPEN | ]
+                  GT | >
+          IDENTIFIER | largest
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+          IDENTIFIER | largest
+              ASSIGN | =
+          IDENTIFIER | intArrVar
+        BRACKET_OPEN | [
+          IDENTIFIER | x
+        BRACKET_OPEN | ]
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+         BRACE_CLOSE | }
+              RETURN | return
+          IDENTIFIER | largest
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+          IDENTIFIER | main
+               COLON | :
+            FUNCTION | function
+             INTEGER | integer
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | argc
+               COLON | :
+             INTEGER | integer
+               COMMA | ,
+          IDENTIFIER | argv
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+              STRING | string
+   PARENTHESIS_CLOSE | )
+              ASSIGN | =
+          BRACE_OPEN | {
+          IDENTIFIER | b
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 10
+        BRACKET_OPEN | ]
+             INTEGER | integer
+              ASSIGN | =
+          BRACE_OPEN | {
+     INTEGER_LITERAL | 0
+               COMMA | ,
+     INTEGER_LITERAL | 1
+               COMMA | ,
+     INTEGER_LITERAL | 2
+               COMMA | ,
+     INTEGER_LITERAL | 3
+               COMMA | ,
+     INTEGER_LITERAL | 4
+               COMMA | ,
+     INTEGER_LITERAL | 5
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+          IDENTIFIER | b
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 4
+        BRACKET_OPEN | ]
+              ASSIGN | =
+     INTEGER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | i
+               COLON | :
+             INTEGER | integer
+           SEMICOLON | ;
+          IDENTIFIER | z
+               COLON | :
+             INTEGER | integer
+              ASSIGN | =
+          IDENTIFIER | intFunction
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | i
+               COMMA | ,
+                TRUE | true
+   PARENTHESIS_CLOSE | )
+           SEMICOLON | ;
+               PRINT | print
+          IDENTIFIER | intArrFunction
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | v
+               COMMA | ,
+          IDENTIFIER | z
+   PARENTHESIS_CLOSE | )
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+===[good2.bminor Input]===
+// basic data types
+number: integer;
+number = 56;
+number = -56;
+number = +56;
+number = 0005006;
+number = +0005006;
+number = -000050006;
+
+
+
+
+
+
+
+
+
+===[good2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | number
+               COLON | :
+             INTEGER | integer
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | 56
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | -56
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | +56
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | 0005006
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | +0005006
+           SEMICOLON | ;
+          IDENTIFIER | number
+              ASSIGN | =
+     INTEGER_LITERAL | -000050006
+           SEMICOLON | ;
+
+
+
+
+===[good3.bminor Input]===
+//test some boolean types
+bool:boolean = true;
+bool:boolean = false;
+bool = 5 > 4;
+
+
+===[good3.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | bool
+               COLON | :
+             BOOLEAN | boolean
+              ASSIGN | =
+                TRUE | true
+           SEMICOLON | ;
+          IDENTIFIER | bool
+               COLON | :
+             BOOLEAN | boolean
+              ASSIGN | =
+               FALSE | false
+           SEMICOLON | ;
+          IDENTIFIER | bool
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+                  GT | >
+     INTEGER_LITERAL | 4
+           SEMICOLON | ;
+
+
+
+
+===[good4.bminor Input]===
+// basic data types
+
+
+character:	 	char = 'c';
+character: char = '\n';
+character:	char = '\0';
+character = '\6';
+character = '\c'
+character = '\t'
+
+
+===[good4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | character
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | c
+           SEMICOLON | ;
+          IDENTIFIER | character
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | 
+
+           SEMICOLON | ;
+          IDENTIFIER | character
+               COLON | :
+                CHAR | char
+              ASSIGN | =
+   CHARACTER_LITERAL | 
+           SEMICOLON | ;
+          IDENTIFIER | character
+              ASSIGN | =
+   CHARACTER_LITERAL | 6
+           SEMICOLON | ;
+          IDENTIFIER | character
+              ASSIGN | =
+   CHARACTER_LITERAL | c
+          IDENTIFIER | character
+              ASSIGN | =
+   CHARACTER_LITERAL | t
+
+
+
+
+===[good5.bminor Input]===
+"This is a string"
+"Notre \n Dame"
+" "
+" string with numbers 3213"
+"String with @@ works in the program"
+""
+
+===[good5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+      STRING_LITERAL | This is a string
+      STRING_LITERAL | Notre 
+ Dame
+      STRING_LITERAL |  
+      STRING_LITERAL |  string with numbers 3213
+      STRING_LITERAL | String with @@ works in the program
+      STRING_LITERAL | 
+
+
+
+
+===[good6.bminor Input]===
+// strings
+str:string = "";
+
+str:string = "we can write an escaped backslash \\";
+" \"this is a unique test case \" ";
+" \n \t \0"
+"\e \r \y"
+str:string = "single qoute ' or \' ";
+str:string = " double qoute \" ";
+
+
+===[good6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | 
+           SEMICOLON | ;
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | we can write an escaped backslash \
+           SEMICOLON | ;
+      STRING_LITERAL |  "this is a unique test case " 
+           SEMICOLON | ;
+      STRING_LITERAL |  
+ t 
+      STRING_LITERAL | e r y
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | single qoute ' or ' 
+           SEMICOLON | ;
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL |  double qoute " 
+           SEMICOLON | ;
+
+
+
+
+===[good7.bminor Input]===
+// strings
+str:string = "";
+
+str:string = "hello this is a string!";
+str:string = "hello this is \1 a string!";
+
+str:string = "11234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567"// less then 160 characters 
+
+
+
+===[good7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | 
+           SEMICOLON | ;
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | hello this is a string!
+           SEMICOLON | ;
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | hello this is 1 a string!
+           SEMICOLON | ;
+          IDENTIFIER | str
+               COLON | :
+              STRING | string
+              ASSIGN | =
+      STRING_LITERAL | 11234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911234567
+
+
+
+
+===[good8.bminor Input]===
+//test arrays
+f:array [5]integer = { 1, 2, 3, 4, 5};
+f:array[5]char = {'a', 'b', 'c', 'd', 'e'};
+f:array[5] boolean = {false, false, true, true, true};
+f:array [] 	string = {"this", "i", "s", "a,", "test", "."};
+
+===[good8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | f
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 5
+        BRACKET_OPEN | ]
+             INTEGER | integer
+              ASSIGN | =
+          BRACE_OPEN | {
+     INTEGER_LITERAL | 1
+               COMMA | ,
+     INTEGER_LITERAL | 2
+               COMMA | ,
+     INTEGER_LITERAL | 3
+               COMMA | ,
+     INTEGER_LITERAL | 4
+               COMMA | ,
+     INTEGER_LITERAL | 5
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+          IDENTIFIER | f
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 5
+        BRACKET_OPEN | ]
+                CHAR | char
+              ASSIGN | =
+          BRACE_OPEN | {
+   CHARACTER_LITERAL | a
+               COMMA | ,
+   CHARACTER_LITERAL | b
+               COMMA | ,
+   CHARACTER_LITERAL | c
+               COMMA | ,
+   CHARACTER_LITERAL | d
+               COMMA | ,
+   CHARACTER_LITERAL | e
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+          IDENTIFIER | f
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+     INTEGER_LITERAL | 5
+        BRACKET_OPEN | ]
+             BOOLEAN | boolean
+              ASSIGN | =
+          BRACE_OPEN | {
+               FALSE | false
+               COMMA | ,
+               FALSE | false
+               COMMA | ,
+                TRUE | true
+               COMMA | ,
+                TRUE | true
+               COMMA | ,
+                TRUE | true
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+          IDENTIFIER | f
+               COLON | :
+               ARRAY | array
+        BRACKET_OPEN | [
+        BRACKET_OPEN | ]
+              STRING | string
+              ASSIGN | =
+          BRACE_OPEN | {
+      STRING_LITERAL | this
+               COMMA | ,
+      STRING_LITERAL | i
+               COMMA | ,
+      STRING_LITERAL | s
+               COMMA | ,
+      STRING_LITERAL | a,
+               COMMA | ,
+      STRING_LITERAL | test
+               COMMA | ,
+      STRING_LITERAL | .
+         BRACE_CLOSE | }
+           SEMICOLON | ;
+
+
+
+
+===[good9.bminor Input]===
+// test comparotors and boolean logic
+if ( a >= 5 )
+{
+	print "a >= 5";
+}
+if( a > 5 )
+{
+	print "a > 5";
+}
+if( a <= 5 )
+{
+	print "a <= 5";
+}
+if( a < 5 )
+{
+	print "a < 5";
+}
+if( a == 5 )
+{
+	print "a == 5";
+}
+if( a != 5 )
+{
+	print "a != 5";
+}
+a = 5; // test assigment
+if (a || b)
+{
+	print " a || b is true";
+}
+if (a && b)
+{
+	print " a && b is true";
+}
+
+===[good9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                 GTE | >=
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a >= 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                  GT | >
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a > 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                 LTE | <=
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a <= 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                  LT | <
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a < 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                  EQ | ==
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a == 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+              NOT_EQ | !=
+     INTEGER_LITERAL | 5
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL | a != 5
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+          IDENTIFIER | a
+              ASSIGN | =
+     INTEGER_LITERAL | 5
+           SEMICOLON | ;
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                  OR | ||
+          IDENTIFIER | b
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL |  a || b is true
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+                 AND | &&
+          IDENTIFIER | b
+   PARENTHESIS_CLOSE | )
+          BRACE_OPEN | {
+               PRINT | print
+      STRING_LITERAL |  a && b is true
+           SEMICOLON | ;
+         BRACE_CLOSE | }
+
+
+
+
+====Bad Tests====
+===[bad1.bminor Input]===
+@
+#
+&
+|
+\
+
+===[bad1.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> @ is not a valid token
+
+
+
+===[bad10.bminor Input]===
+// invalid character
+'\'
+
+===[bad10.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad11.bminor Input]===
+/*
+A string should not contain a literal newline,
+but use backslash-n instead.
+*/
+
+"invalid
+
+string"
+
+===[bad11.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> " is not a valid token
+
+
+
+===[bad12.bminor Input]===
+'ca'
+
+===[bad12.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad13.bminor Input]===
+''
+
+===[bad13.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad14.bminor Input]===
+'\ac'
+
+===[bad14.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad15.bminor Input]===
+'
+
+===[bad15.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> ' is not a valid token
+
+
+
+===[bad2.bminor Input]===
+// unmatched comment throws error 
+/* This is a comment.
+
+
+
+
+
+
+
+
+===[bad2.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> Comment was not closed.
+scan error> /* This is a comment.
+
+
+
+
+
+
+
+ is not a valid token
+
+
+
+===[bad3.bminor Input]===
+// basic data types
+" the quote is unmatched
+
+
+
+
+
+
+
+===[bad3.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> " is not a valid token
+
+
+
+===[bad4.bminor Input]===
+// doesn't support floating point
+50006.0050;
+
+===[bad4.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+     INTEGER_LITERAL | 50006
+
+scan error> . is not a valid token
+
+
+
+===[bad5.bminor Input]===
+// test comparotors and boolean logic
+if (a | b)
+{
+	print " a || b is true";
+}
+if (a & b)// must had 2 &&
+{
+	print " a || b is true";
+}
+
+===[bad5.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+                  IF | if
+    PARENTHESIS_OPEN | (
+          IDENTIFIER | a
+
+scan error> | is not a valid token
+
+
+
+===[bad6.bminor Input]===
+
+"""
+
+
+===[bad6.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+      STRING_LITERAL | 
+
+scan error> " is not a valid token
+
+
+
+===[bad7.bminor Input]===
+"012345678901234567890101234567890123456789010123456789012345678901012345678901234567890101234567890123456789010123456789012345678901012345678901234567890101234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+
+
+===[bad7.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> " is not a valid token
+
+
+
+===[bad8.bminor Input]===
+$minus
+
+===[bad8.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+
+scan error> $ is not a valid token
+
+
+
+===[bad9.bminor Input]===
+minus#44
+
+===[bad9.bminor Output]===
+               TOKEN | VALUE               
+-------------------------------------------
+          IDENTIFIER | minus
+
+scan error> # is not a valid token
+
+
+
