@@ -80,7 +80,7 @@ while               { return TOKEN_WHILE; }
 {ID}                { return TOKEN_ID; }
 
     /* default */
-.                   { return TOKEN_ERROR; }
+.                   { fprintf(stderr, "scan error> %s is not a valid token\n", yytext); exit(1); }
 
 %%
 
