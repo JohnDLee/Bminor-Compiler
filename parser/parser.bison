@@ -87,8 +87,8 @@ literals:   TOKEN_INT_LIT
 id      :   TOKEN_ID
         ;
 
-expr_0  :   id TOKEN_INCREMENT  // can you increment/decrement non-ID
-        |   id TOKEN_DECREMENT
+expr_0  :   expr_0 TOKEN_INCREMENT  // can you increment/decrement non-ID
+        |   expr_0 TOKEN_DECREMENT
         |   TOKEN_LPAREN expr_main TOKEN_RPAREN
         |   expr_0 TOKEN_LBRACKET expr_main TOKEN_RBRACKET // IS THIS valid?
         |   id TOKEN_LPAREN expr_eps TOKEN_RPAREN
@@ -134,7 +134,7 @@ expr_7  :   expr_6
 
 expr_8  :   expr_7
         |   expr_7 TOKEN_ASSIGN expr_8      // right to left
-        |   expr_7 TOKEN_QMARK expr_8 TOKEN_COLON expr_8    // probably SR conflict
+        |   expr_7 TOKEN_QMARK expr_8 TOKEN_COLON expr_8    // right to left
         ;
 
 expr_main   :   expr_8   
@@ -188,7 +188,7 @@ non_problem_stmt    :   expr_main TOKEN_SEMI
 * DECLARATIONS *
 ****************/
 
-// must have a constant
+// for nested lists
 expr_braced     :      TOKEN_LBRACE expr_braced TOKEN_RBRACE TOKEN_COMMA expr_braced
                 |      TOKEN_LBRACE expr_braced TOKEN_RBRACE
                 |      expr_list

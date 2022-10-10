@@ -26,7 +26,7 @@ ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
 \/\/[^\n]*                          /* skip C Comment */
 \/\*(([^\*])|(\*+[^\/\*]))*\*+\/    /* skip C++ Comment */
 \/\*([^\*]|(\*+[^\/\*]))*(\*+)?     { fprintf(stderr, "scan error> Comment was not closed.\n");
-                                     return TOKEN_ERROR; }
+                                     exit(1); }
     
     /* Expression Symbols */
 \(                  { return TOKEN_LPAREN; }

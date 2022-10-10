@@ -49,7 +49,7 @@ parser_test: bminor
 clean:
 	rm -rf scanner/lex.yy.c scanner/lex.yy.o
 	rm -rf tests/scanner/*.out tests_self/scanner/*.out
-	rm -rf parser/parser.c parser/parser.o parser/token.h
+	rm -rf parser/parser.c parser/parser.o parser/token.h parser/parser.output
 	rm -rf tests/parser/*.out tests_self/parser/*.out
 	rm -rf main.o bminor_helper.o
 	rm -rf bminor

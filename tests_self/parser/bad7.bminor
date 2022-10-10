@@ -1,5 +1,5 @@
-// multiple ++
+// ++ in beginning
 main: function void () = {
 
-    x: integer = x++++ + 1;
+    x++: integer = 0;
 }

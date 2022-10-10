@@ -1,2 +1,2 @@
-// should not accept non-id ++
-x : integer = 1++;
+// incorrect writing
+x : int = 2;
