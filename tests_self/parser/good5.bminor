@@ -1,0 +1,5 @@
+// should parse but shouldn't pass typecheck
+main: function integer () = {
+
+    main: function integer();
+}

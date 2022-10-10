@@ -1,0 +1,8 @@
+puts: function void ();
+
+main: function integer(x:integer);
+
+puts: function void () = {
+    return 0;
+}
+

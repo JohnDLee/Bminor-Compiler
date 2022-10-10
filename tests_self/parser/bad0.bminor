@@ -1,0 +1,6 @@
+// should not accept only semi
+main: function integer () = {
+    
+    ;
+
+}

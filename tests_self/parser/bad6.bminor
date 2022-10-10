@@ -1,0 +1,2 @@
+// array indexing
+a : integer = [x=4][33][44*x + 3];

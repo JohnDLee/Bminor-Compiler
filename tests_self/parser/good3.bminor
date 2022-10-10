@@ -1,0 +1,4 @@
+// other definitions in global
+x: integer = 1;
+y: integer = False;
+z: array [1] integer = {1, 2, 3, 4, 5};

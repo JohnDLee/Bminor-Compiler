@@ -1,0 +1,5 @@
+// invalid mult
+main: function void () = {
+
+    x: integer = 3(x+1) + 4;
+}

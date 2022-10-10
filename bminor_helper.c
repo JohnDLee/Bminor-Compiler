@@ -1,53 +1,9 @@
+#include "bminor_helper.h"
 
-
-#include "token.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-extern FILE *yyin;
-extern int yylex();
-extern char *yytext;
-
-
-char * tokToString(token_t token, char* yytext);
-void print1(char* token_str, char* yytext);
-
-
-int main(int argc, char* argv[] ) {
-
-    if (argc > 3) {
-        fprintf(stderr, "bminor> invalid input: too many arguments\nusage:\n\t./bminor -scan <program.bminor>\n");
-        return 1;
-    }
-    if (strcmp(argv[1], "-scan") != 0) {
-        fprintf(stderr, "bminor> you must provide -scan as a flag\n");
-        return 1;
-    }
-
-
-    yyin = fopen(argv[2],"r");
-    if(!yyin) {
-        fprintf(stderr, "bminor> could not open %s!\n", argv[2]);
-        return 1;
-    }
-
-    // output token form
-    printf("%20s | %-20s\n", "TOKEN", "VALUE");
-    printf("-------------------------------------------\n");
-    while(1) {
-        token_t t = yylex();
-        if(t==TOKEN_EOF) break;
-        tokToString(t, yytext);
-    }
-}
-
-
-char * tokToString(token_t token, char* yytext) {
+int tokToString(token_t token, char* yytext) {
 
     // tokens
     switch (token) {
-        case TOKEN_EOF:
-            break;
         // keywords
         case TOKEN_ARRAY:
             print1("ARRAY", yytext);
@@ -98,22 +54,22 @@ char * tokToString(token_t token, char* yytext) {
             print1("WHILE", yytext);
             break;
         // expression/symbol:
-        case TOKEN_PARENTHESIS_OPEN:
+        case TOKEN_LPAREN:
             print1("PARENTHESIS_OPEN", yytext);
             break;
-        case TOKEN_PARENTHESIS_CLOSE:
+        case TOKEN_RPAREN:
             print1("PARENTHESIS_CLOSE", yytext);
             break;
-        case TOKEN_BRACKET_OPEN:
+        case TOKEN_LBRACKET:
             print1("BRACKET_OPEN", yytext);
             break;
-        case TOKEN_BRACKET_CLOSE:
+        case TOKEN_RBRACKET:
             print1("BRACKET_OPEN", yytext);
             break;
-        case TOKEN_BRACE_OPEN:
+        case TOKEN_LBRACE:
             print1("BRACE_OPEN", yytext);
             break;
-        case TOKEN_BRACE_CLOSE:
+        case TOKEN_RBRACE:
             print1("BRACE_CLOSE", yytext);
             break;
         case TOKEN_INCREMENT:
@@ -131,16 +87,16 @@ char * tokToString(token_t token, char* yytext) {
         case TOKEN_MULT:
             print1("MULTIPLY", yytext);
             break;
-        case TOKEN_DIVIDE:
+        case TOKEN_DIV:
             print1("DIVIDE", yytext);
             break;
-        case TOKEN_MODULUS:
+        case TOKEN_MOD:
             print1("MODULUS", yytext);
             break;
-        case TOKEN_ADD:
-            print1("ADD", yytext);
+        case TOKEN_PLUS:
+            print1("PLUS", yytext);
             break;
-        case TOKEN_SUB:
+        case TOKEN_MINUS:
             print1("SUBTRACT", yytext);
             break;
         case TOKEN_GT:
@@ -167,7 +123,7 @@ char * tokToString(token_t token, char* yytext) {
         case TOKEN_COMMA:
             print1("COMMA", yytext);
             break;
-        case TOKEN_SEMICOLON:
+        case TOKEN_SEMI:
             print1("SEMICOLON", yytext);
             break;
         case TOKEN_COLON:
@@ -195,14 +151,39 @@ char * tokToString(token_t token, char* yytext) {
             break;
         case TOKEN_ERROR:
             fprintf(stderr, "scan error> %s is not a valid token\n", yytext);
-            exit(1);
+            return 1;
             break;
         
         default:
-            return "OTHER";
+            print1("OTHER", yytext);
+            return 1;
     }
+    return 0;
 }
 
 void print1(char* token_str, char* yytext) {
     printf("%20s | %s\n", token_str, yytext);
+}
+
+int scan() {
+    // output token form
+    printf("%20s | %-20s\n", "TOKEN", "VALUE");
+    printf("-------------------------------------------\n");
+    while(1) {
+        token_t t = yylex();
+        if(t==0) break; //! FIX
+        if (tokToString(t, yytext) == 1) return 1;
+    }
+    return 0;
+}
+
+int parse(void) {
+
+    if(yyparse()==0) {
+		printf("Parse successful!\n");
+		return 0;
+	} else {
+		printf("Parse failed.\n");
+		return 1;
+	}
 }

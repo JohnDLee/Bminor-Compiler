@@ -1,0 +1,2 @@
+// outside should be declarations only
+x = 3 + 4;

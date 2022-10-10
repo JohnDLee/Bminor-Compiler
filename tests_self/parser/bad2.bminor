@@ -1,0 +1,4 @@
+// must define types
+x: function boolean (y, z, a)  = {
+
+}

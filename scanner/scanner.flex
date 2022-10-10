@@ -1,5 +1,7 @@
 %{
-#include "token.h"
+#include "../parser/token.h"
+
+void fixString(char*);
 %}
 
 
@@ -14,7 +16,7 @@ ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
 
 
     /* Literals */
-(-|\+)?{DIGIT}+                 { return TOKEN_INT_LIT; }
+{DIGIT}+                 { return TOKEN_INT_LIT; }
 '([^\\'\n]|\\.)'                { fixString(yytext);  
                                   return TOKEN_CHAR_LIT; }
 \"([^\\\"\n]|\\.){0,255}\"      { fixString(yytext);  
@@ -27,20 +29,20 @@ ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
                                      return TOKEN_ERROR; }
     
     /* Expression Symbols */
-\(                  { return TOKEN_PARENTHESIS_OPEN; }
-\)                  { return TOKEN_PARENTHESIS_CLOSE; }
-\[                  { return TOKEN_BRACKET_OPEN; }
-\]                  { return TOKEN_BRACKET_CLOSE; }
-\{                  { return TOKEN_BRACE_OPEN; }
-\}                  { return TOKEN_BRACE_CLOSE; }
+\(                  { return TOKEN_LPAREN; }
+\)                  { return TOKEN_RPAREN; }
+\[                  { return TOKEN_LBRACKET; }
+\]                  { return TOKEN_RBRACKET; }
+\{                  { return TOKEN_LBRACE; }
+\}                  { return TOKEN_RBRACE; }
 \+\+                { return TOKEN_INCREMENT; }
 --                  { return TOKEN_DECREMENT; }
 \^                  { return TOKEN_EXPONENT; }
 \*                  { return TOKEN_MULT; }
-\/                  { return TOKEN_DIVIDE; }
-%                   { return TOKEN_MODULUS; }
-\+                  { return TOKEN_ADD; }
--                   { return TOKEN_SUB; }
+\/                  { return TOKEN_DIV; }
+%                   { return TOKEN_MOD; }
+\+                  { return TOKEN_PLUS; }
+-                   { return TOKEN_MINUS; }
 >=                  { return TOKEN_GTE; }
 \<=                 { return TOKEN_LTE; }
 ==                  { return TOKEN_EQ; }
@@ -51,9 +53,10 @@ ID [a-zA-Z_][a-zA-Z_0-9]{0,254}
 =                   { return TOKEN_ASSIGN; }
 ,                   { return TOKEN_COMMA; }
 :                   { return TOKEN_COLON; }
-;                   { return TOKEN_SEMICOLON; }
+;                   { return TOKEN_SEMI; }
 \|\|                { return TOKEN_OR; }
 &&                  { return TOKEN_AND; }
+\?                  { return TOKEN_QMARK; }
 
 
     /* KEYWORDS + ID */

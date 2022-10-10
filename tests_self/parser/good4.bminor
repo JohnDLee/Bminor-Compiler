@@ -1,0 +1,6 @@
+// expr in arrays
+main: function integer () = {
+
+    x : array [3*x + 4] integer;
+    y : array [sizeof(x)] integer;
+}

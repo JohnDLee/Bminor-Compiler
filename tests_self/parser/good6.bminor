@@ -1,0 +1,2 @@
+// nested arrays
+x: array [10] array [20] array [30] integer = {{{1, 2, 3}, {1}}, {{1}, {1}}, {{1}, {1}}};

@@ -1,0 +1,10 @@
+main: function integer () = {
+    
+    x:integer = 3;
+    y:integer;
+    z: boolean = false;
+    a: char = 'a';
+    b: string = "SENTENCE";
+    y = 3;
+
+}

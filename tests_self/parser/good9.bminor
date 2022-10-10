@@ -1,0 +1,2 @@
+// confusing ternary
+x:integer = y=123 ? z = 123 ? a = 231 : b = 231 : q = 345;

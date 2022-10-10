@@ -1,0 +1,5 @@
+// multiple ++
+main: function void () = {
+
+    x: integer = x++++ + 1;
+}

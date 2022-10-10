@@ -1,0 +1,5 @@
+// missing semi
+main: function void () = {
+
+    x: integer = x++ + 1
+}
