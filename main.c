@@ -1,4 +1,5 @@
 #include "bminor_helper.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -22,18 +23,25 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    if (strcmp(argv[1], "-parse") == 0) {
+    // scanning
+    if (strcmp(argv[1], "-scan") == 0) {
+            return scan();
+        }
+    // parsing
+    else if (strcmp(argv[1], "-parse") == 0) {
         return parse();
     }
-    else if (strcmp(argv[1], "-scan") == 0) {
-        return scan();
-    }
-    else {
-        fprintf(stderr, "bminor> you must provide one of (-parse, -scan) as a flag\n");
+    // printing
+    else if (strcmp(argv[1], "-print") == 0) {
+        if (yyparse() == 0) {
+            decl_print(ast_head, 0);
+            return 0;
+        } 
         return 1;
     }
-
-
-
+    else {
+        fprintf(stderr, "bminor> you must provide one of (-print, -parse, -scan) as a flag\n");
+        return 1;
+    }
 
 }

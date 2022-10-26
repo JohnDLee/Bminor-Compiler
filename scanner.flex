@@ -1,5 +1,5 @@
 %{
-#include "../parser/token.h"
+#include "token.h"
 
 void fixString(char*);
 %}

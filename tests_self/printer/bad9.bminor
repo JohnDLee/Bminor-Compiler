@@ -1,0 +1,8 @@
+f: function void () = {
+    if (x)
+        a = bc;
+        d = ef;
+    else if (x) {
+        d = f;
+    }
+}

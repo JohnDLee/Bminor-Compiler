@@ -1,0 +1,14 @@
+main: function void () = {
+
+    if (x + 1) {
+        if (x) 
+            if (z)
+                q;
+        else if (y + 1)
+            y;
+        else if (p) {
+            q;
+        }
+    } else
+        q;
+}

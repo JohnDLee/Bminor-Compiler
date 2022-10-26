@@ -1,8 +1,14 @@
 #ifndef BMINOR_HELPER
 #define BMINOR_HELPER
 
+#include "decl.h"
+#include "expr.h"
+#include "param_list.h"
+#include "stmt.h"
+#include "type.h"
+#include "symbol.h"
 
-#include "parser/token.h"
+#include "token.h"
 #include <stdio.h>
 
 // typedef tokens
@@ -12,6 +18,7 @@ typedef enum yytokentype token_t;
 extern FILE *yyin;
 extern int yylex();
 extern char *yytext;
+extern struct decl * ast_head;
 
 
 /* scanner funcs */

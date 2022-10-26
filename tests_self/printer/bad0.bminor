@@ -1,0 +1,1 @@
+bminor: boolean = {a, 1, (false)}[1];

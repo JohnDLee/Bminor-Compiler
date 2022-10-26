@@ -3,13 +3,13 @@
 # Purpose: Makefile to compile B-Minor Compiler
 
 # compile/link all
-bminor: scanner/lex.yy.o main.o bminor_helper.o parser/parser.o parser/token.h # change token.h to the one developed by bison
-	gcc scanner/lex.yy.o main.o bminor_helper.o parser/parser.o -o bminor
+bminor: lex.yy.o main.o bminor_helper.o parser.o token.h ast.o
+	gcc lex.yy.o main.o bminor_helper.o ast.o parser.o -o bminor
 
 ########
 # Main #
 ########
-main.o: main.c parser/token.h
+main.o: main.c token.h
 	gcc main.c -c -o main.o
 
 bminor_helper.o: bminor_helper.c bminor_helper.h
@@ -20,11 +20,11 @@ bminor_helper.o: bminor_helper.c bminor_helper.h
 ###########
 
 # create lex.y.c
-scanner/lex.yy.c: scanner/scanner.flex
-	flex -o scanner/lex.yy.c scanner/scanner.flex
+lex.yy.c: scanner.flex
+	flex -o lex.yy.c scanner.flex
 
-scanner/lex.yy.o: scanner/lex.yy.c parser/token.h
-	gcc scanner/lex.yy.c -c -o scanner/lex.yy.o
+lex.yy.o: lex.yy.c token.h
+	gcc lex.yy.c -c -o lex.yy.o
 
 scan_test: bminor
 	./tests/scanner/run_all_tests.sh
@@ -35,21 +35,32 @@ scan_test: bminor
 # Parser #
 ##########
 
-parser/parser.c parser/token.h: parser/parser.bison
-	bison -o parser/parser.c parser/parser.bison --defines=parser/token.h -v --debug
+parser.c token.h: parser.bison
+	bison -o parser.c parser.bison --defines=token.h -v --debug
 
-parser/parser.o: parser/parser.c
-	gcc parser/parser.c -c -o parser/parser.o
+parser.o: parser.c
+	gcc parser.c -c -o parser.o
 
-parser_test: bminor
+parse_test: bminor
 	./tests/parser/run_all_tests.sh
 	./tests_self/parser/run_all_tests.sh
 
+###########
+# Printer #
+###########
+ast.o: ast.c expr.h stmt.h type.h param_list.h symbol.h decl.h
+	gcc ast.c -c -o ast.o
+
+print_test: bminor
+	./tests/printer/run_all_tests.sh
+	./tests_self/printer/run_all_tests.sh
 
 clean:
-	rm -rf scanner/lex.yy.c scanner/lex.yy.o
+	rm -rf lex.yy.c lex.yy.o
 	rm -rf tests/scanner/*.out tests_self/scanner/*.out
-	rm -rf parser/parser.c parser/parser.o parser/token.h parser/parser.output
+	rm -rf parser.c parser.o token.h parser.output
 	rm -rf tests/parser/*.out tests_self/parser/*.out
 	rm -rf main.o bminor_helper.o
+	rm -rf ast.o
+	rm -rf tests/printer/*.out tests_self/printer/*.out
 	rm -rf bminor
