@@ -1,0 +1,1395 @@
+=====STUDENT TESTS=====
+====Good Tests====
+===[good0.bminor Input]===
+main: function integer () = {
+    
+    x:integer = 3;
+    y:integer;
+    z: boolean = false;
+    a: char = 'a';
+    b: string = "SENTENCE";
+    y = 3;
+
+}
+===[good0.bminor Output]===
+Parse successful!
+
+
+
+
+===[good1.bminor Input]===
+puts: function void ();
+
+main: function integer(x:integer);
+
+puts: function void () = {
+    return 0;
+}
+
+
+===[good1.bminor Output]===
+Parse successful!
+
+
+
+
+===[good2.bminor Input]===
+main: function integer () = {
+    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}
+===[good2.bminor Output]===
+Parse successful!
+
+
+
+
+===[good3.bminor Input]===
+// other definitions in global
+x: integer = 1;
+y: integer = False;
+z: array [1] integer = {1, 2, 3, 4, 5};
+===[good3.bminor Output]===
+Parse successful!
+
+
+
+
+===[good4.bminor Input]===
+// expr in arrays
+main: function integer () = {
+
+    x : array [3*x + 4] integer;
+    y : array [sizeof(x)] integer;
+}
+===[good4.bminor Output]===
+Parse successful!
+
+
+
+
+===[good5.bminor Input]===
+// should parse but shouldn't pass typecheck
+main: function integer () = {
+
+    main: function integer();
+}
+===[good5.bminor Output]===
+Parse successful!
+
+
+
+
+===[good6.bminor Input]===
+// nested arrays
+x: array [10] array [20] array [30] integer = {{{1, 2, 3}, {1}}, {{1}, {1}}, {{1}, {1}}};
+===[good6.bminor Output]===
+Parse successful!
+
+
+
+
+===[good7.bminor Input]===
+// array indexing
+a : integer = arr[33][44*x + 3];
+===[good7.bminor Output]===
+Parse successful!
+
+
+
+
+===[good8.bminor Input]===
+main: function void () = {
+
+    if (x + 1) {
+        if (x + 1) 
+            z;
+        else if (y + 1)
+            y;
+        else
+            q;
+    } else
+        q;
+}
+===[good8.bminor Output]===
+Parse successful!
+
+
+
+
+===[good9.bminor Input]===
+// confusing ternary
+x:integer = y=123 ? z = 123 ? a = 231 : b = 231 : q = 345;
+===[good9.bminor Output]===
+Parse successful!
+
+
+
+
+====Bad Tests====
+===[bad0.bminor Input]===
+// should not accept only semi
+main: function integer () = {
+    
+    ;
+
+}
+===[bad0.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad1.bminor Input]===
+// should not pass since scanner doesn't
+&
+===[bad1.bminor Output]===
+
+scan error> & is not a valid token
+
+
+
+===[bad2.bminor Input]===
+// must define types
+x: function boolean (y, z, a)  = {
+
+}
+===[bad2.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad3.bminor Input]===
+// outside should be declarations only
+x = 3 + 4;
+===[bad3.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad4.bminor Input]===
+main:function void () {}
+===[bad4.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad5.bminor Input]===
+// incorrect writing
+x : int = 2;
+===[bad5.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad6.bminor Input]===
+// array indexing
+a : integer = [x=4][33][44*x + 3];
+===[bad6.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad7.bminor Input]===
+// ++ in beginning
+main: function void () = {
+
+    x++: integer = 0;
+}
+===[bad7.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad8.bminor Input]===
+// missing semi
+main: function void () = {
+
+    x: integer = x++ + 1
+}
+===[bad8.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad9.bminor Input]===
+// invalid mult
+main: function void () = {
+
+    x: integer = 3(x+1) + 4;
+}
+===[bad9.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+=====HIDDEN TESTS=====
+====Good Tests====
+===[good10.bminor Input]===
+/* Try accesssing arrays of various sizes; */
+
+a: array [10] integer = {100,200,300,400,500,600,700,800,900};
+b: array [10] integer;
+c: array [10] array [10] integer;
+
+testfunc: function void () = {
+    i: integer;
+    j: integer;
+
+    for(i=0;i<10;i++) {
+        b[i] = a[i] * 10;
+    }
+
+    for(i=0;i<5;i++) {
+        b[i*2] = a[i] + b[i];
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            c[i][j] = i*j;
+        }
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            print c[i][j];
+            print " ";
+        }
+        print "\n";
+    }
+}
+
+===[good10.bminor Output]===
+Parse successful!
+
+
+
+
+===[good2.bminor Input]===
+/* Function prototypes are declarations without bodies. */
+
+ComputeAscii: function char ( c: char );
+
+GetLength: function integer ( s: string, i: integer );
+
+/* Function body has some code in it */
+
+GetArea: function integer ( width: integer, height: integer ) =
+{
+	return width * height;
+}
+
+===[good2.bminor Output]===
+Parse successful!
+
+
+
+
+===[good4.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 + x / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good4.bminor Output]===
+Parse successful!
+
+
+
+
+===[good5.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 + x / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good5.bminor Output]===
+Parse successful!
+
+
+
+
+===[good6.bminor Input]===
+/* Try several variations of for-loops */
+
+simplefunc: function void (r: integer, s: integer, t: integer ) = {
+
+    i: integer;
+
+    for( i=0; i<r; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<s; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<r; ) {
+        print i,"\n";
+        i++;
+    }
+
+    for(;;) print "forever!\n";
+}
+
+===[good6.bminor Output]===
+Parse successful!
+
+
+
+
+===[good7.bminor Input]===
+/* Test various nestings of if-else statements */
+
+testit: function boolean ( x: integer, y: integer ) = {
+
+	/* If statement without braces */
+	if( x<y ) print "less\n"; else print "low\n";
+
+	/* If statement with braces */
+	if( x<y ) { print "less\n"; } else { print "low\n"; }
+
+	/* This statement should print nothing */
+        if(20<10) if(10<20) print "incorrect!"; else print "dangling else!";
+
+	/* statements and decls inside of if-else */
+
+        if( x>y ) {
+              i: integer;
+              for(i=0;i<x;i++) print i, "\n";
+        } else {
+              i: integer;
+              for(i=0;i<y;i++) print i, "\n";
+        }
+
+	/* A decl can come after a few statements */
+	i: integer;
+
+	/* try the other way around */
+	for(i=0;i<x;i++) {
+              if( i<x ) print "small"; else print "large";
+        }
+
+        return true;
+}
+
+===[good7.bminor Output]===
+Parse successful!
+
+
+
+
+===[good9.bminor Input]===
+/* Check for minimum use of parentheses. */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+          r: integer;
+	  b: boolean;
+
+          // Parens required
+	  r = (x+y)/z;
+	  r = x+(y+z);
+	  b = (true||false) && (false||true);
+
+          // Parens not required
+	  r = x+(y/z);
+	  r = (x+y)+z;
+	  b = (x+y) < (x+z);
+	  b = (true&&false) || (false&&true);
+
+}
+
+===[good9.bminor Output]===
+Parse successful!
+
+
+
+
+===[good1.bminor Input]===
+/* A program is a sequence of declarations */
+/* Try a variety of variable declarations. */
+
+n: integer;
+m: integer = 20;
+
+b: boolean;
+c: boolean = true;
+s: string;
+t: string = "hello\n";
+d: char;
+e: char = 'x';
+
+f: auto = 10;
+
+x: array [] string;
+y: array [] string = { "a", "b", "c" };
+z: array [] array [] string = { {"a","b","c"}, {"x","y","z"} };
+
+g: array [3] string;
+h: array [3] string = { "a", "b", "c" };
+i: array [2] array [3] string = { {"a","b","c"}, {"x","y","z"} };
+
+===[good1.bminor Output]===
+Parse successful!
+
+
+
+
+===[good3.bminor Input]===
+/* A function contains a sequence of statements */
+/* Some of those statements can be decls */
+
+simplefunc: function void () = {
+     x: integer;
+     y: integer = 20;
+     s: string = "hello world";
+     a: auto = 'x';
+}
+
+===[good3.bminor Output]===
+Parse successful!
+
+
+
+
+===[good8.bminor Input]===
+/* Now try some expressions */
+
+x: integer = 65;
+s: string = "hello";
+b: boolean = false;
+
+min: function integer ( a: integer, b: integer ) =
+{
+	if( a<b ) return a; else return b;
+}
+
+testfunc: function void ( z: integer ) =
+{
+	// Nested integer operators.
+	y: integer = x*(x*10 + 55%6 + z/10);
+	print "y: ", y, "\n";
+
+	// Nested boolean operations.
+	c: boolean = ( x<100 && y>200 ) || !(b=true);
+	print "c: ", c, "\n";
+
+	// Boolean operations on strings?
+	d: boolean = (s == "goodbye");
+	print "d: ", d, "\n";
+
+	// Can we stack up assignments?
+	z = y = x;
+
+	a: array [100] integer;
+
+	// Function calls and array accesses:
+	y = min(a[10],a[20]);
+
+	// Ternary operator
+	q: boolean = (z<10) ? true : false;
+}
+
+===[good8.bminor Output]===
+Parse successful!
+
+
+
+
+====Bad Tests====
+===[bad1.bminor Input]===
+/* A program is a not an expression at the top level */
+
+x = 5;
+
+
+===[bad1.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad10.bminor Input]===
+/* Unbalanced braces */
+
+main:function integer ( x: integer ) =
+{
+	if(x<10) {
+              if(x!=23) {
+                  print "hello";
+              } else {
+                  print "goodbye";
+              }
+        print "too few braces";
+}
+
+===[bad10.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad2.bminor Input]===
+/* A program is a not a sequence of statements */
+
+print "hello world";
+return 5;
+
+===[bad2.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad3.bminor Input]===
+/* Cannot have more elses than ifs */
+
+simplefunc: function void () = {
+     x: integer = 10;
+     y: integer = 20;
+
+     if(x<y) if(y>x) else print "a"; else print "b" else print "c";
+}
+
+===[bad3.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad4.bminor Input]===
+/* For loop does need to have semis even if parts are missing */
+
+main: function void() =
+{
+        i: integer;
+	for(i=0;) print i;
+}
+
+===[bad4.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad5.bminor Input]===
+/* Print statement must separate elemnts with a comma */
+
+main:function void()
+{
+	print x y z;
+}
+
+===[bad5.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad6.bminor Input]===
+/* Function parameters must separate with a comma */
+
+main:function void( x:integer y:integer );
+
+===[bad6.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad7.bminor Input]===
+/* No invalid seqeuences of operators */
+
+main:function integer ( x:integer ) = {
+
+        return x + * 5 * - 7;
+}
+
+===[bad7.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad8.bminor Input]===
+/* Unbalanced parentheses */
+
+main:function integer( x: integer ) =
+{
+	return (x*(x+5);
+}
+
+===[bad8.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad9.bminor Input]===
+/* Unbalanced braces */
+
+main:function integer ( x: integer ) =
+{
+	if(x<10) {
+              if(x!=23) {
+                  print "hello";
+              } else {
+                  print "goodbye";
+              }
+        }
+
+    }
+    print "too many braces";
+}
+
+===[bad9.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+=====COMMON TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+//empty program
+
+===[good1.bminor Output]===
+Parse successful!
+
+
+
+
+===[good10.bminor Input]===
+//some variable usages
+x:integer;
+y:integer;
+z:integer;
+arr:array[5] array[5] integer;
+str: string = "hello world";
+fxn : function  integer () =
+{
+	arr[3][2] = 5;
+	x = arr[2][3];
+	x++;
+	return z;
+	c:char = str[0];
+} 
+
+===[good10.bminor Output]===
+Parse successful!
+
+
+
+
+===[good11.bminor Input]===
+// test print statements
+str:string = "this is a string";
+str2:string;
+x:integer;
+main: function void () = {
+	print;
+	print "\n \r \t \0";
+	print x, y, "hello", true, false;
+	print str, " str ", x, str2; 
+}
+
+===[good11.bminor Output]===
+Parse successful!
+
+
+
+
+===[good12.bminor Input]===
+//test expressions inside of array indexes
+arr:array [5] integer = {0,1,2,3,4};
+
+main:function void() =
+{
+	x:integer = 5;
+	y:integer = 3;
+	arr[x - y] = 4;
+	arr[y + x * 3] = arr[2+ x^2 - 1];
+} 
+	
+
+===[good12.bminor Output]===
+Parse successful!
+
+
+
+
+===[good13.bminor Input]===
+// test types of literals
+x:integer = 5;
+c:char = 'A';
+str:string = "hello";
+iarr: array [4] integer = {1,2,3,4};
+carr:array [4] char = {'a', 'b', 'c', 'd'};
+barr:array [4] boolean = {true, false, true, true};
+iaar: array [4] array [4] integer = {iarr, iarr, iarr, iarr};
+
+===[good13.bminor Output]===
+Parse successful!
+
+
+
+
+===[good14.bminor Input]===
+// test function calls
+func1: function integer (x:integer, y:char) =
+{
+	print x;
+	return 1;
+}
+func2: function integer (y:char) =
+{
+	print x;
+	return 2;
+}
+func3: function integer (x:integer, y:char, z:string)=
+{
+	print z;
+	return 4;
+}
+
+main: function void ()=
+{
+	x:integer = 4;
+	y:char = 'c';
+	z:string = "hello";
+	func2('c');
+	func2(y);
+	func1(42, y);
+	func1(x, 'c');
+	func3(4, y, z);
+}
+
+===[good14.bminor Output]===
+Parse successful!
+
+
+
+
+===[good15.bminor Input]===
+/*
+This program displays a square bouncing around on the screen.
+Click to reset the square in a new place.
+It makes use of the (included) C gfx library and the standard C library,
+and exercises, loops, comparisons, and logical operators.
+*/
+
+/* These are the functions in the gfx library. */
+gfx_open: function void ( width: integer, height: integer, title:string );
+gfx_point: function void ( x: integer, y: integer );
+gfx_line: function void ( x1:integer, y1:integer, x2:integer, y2:integer );
+gfx_color: function void ( red:integer, green: integer, blue:integer );
+gfx_clear: function void ();
+gfx_clear_color: function void ( red:integer, green: integer, blue:integer );
+gfx_wait: function char ();
+gfx_xpos: function integer ();
+gfx_ypos: function integer ();
+gfx_xsize: function integer ();
+gfx_ysize: function integer ();
+gfx_event_waiting: function boolean ();
+gfx_flush: function integer ();
+
+/* These functions come from the C standard library. */
+
+usleep: function void ( usecs: integer );
+rand: function integer();
+
+draw_box: function void ( x: integer, y:integer, size: integer ) =
+{
+	gfx_color(255,255,255);
+	gfx_line(x,y,x+size,y);
+	gfx_line(x+size,y,x+size,y+size);
+	gfx_line(x+size,y+size,x,y+size);
+	gfx_line(x,y+size,x,y);
+}
+
+/*
+Note that the precision multiplier indicates fixed-point
+match to keep track of sub-pixel position and velocity for the box.
+*/
+
+main: function integer () =
+{
+	precision: integer = 100;
+
+	xsize: integer = 500; // pixels
+	ysize: integer = 500; // pixels 
+
+	x: integer = precision * xsize / 2;
+	y: integer = precision * ysize / 2;
+
+	vx: integer = precision * 3;
+	vy: integer = precision * -5 ;
+
+	deltat: integer = 100;
+
+	gfx_open(xsize,ysize,"Bounce!");
+
+	for(;;) {
+		print "x: ", x, " y: ", y, " vx: ", vx, " vy: ", vy, "\n";
+
+		if(gfx_event_waiting()) {
+			c: char;
+			c = gfx_wait();
+			if(c=='q') return 0;
+			x = gfx_xpos()*precision;
+			y = gfx_ypos()*precision;
+			vx = 5*precision;
+		}
+
+		vy = vy + 1 * precision;
+
+		if(x<0 && vx<0) {
+			vx = -9*vx/10;
+		}	
+
+		if(x>(xsize*precision) && vx>0) {
+			vx = -9*vx/10;
+		}
+
+		if(y>(ysize*precision) && vy>0) {
+			vy = -9*vy/10;
+		}
+
+		x = x + vx*deltat/precision;
+		y = y + vy*deltat/precision;
+
+		gfx_clear();
+		draw_box(x/precision,y/precision,25);
+		gfx_flush();
+
+		usleep(deltat*precision);
+	}
+}
+
+===[good15.bminor Output]===
+Parse successful!
+
+
+
+
+===[good2.bminor Input]===
+// variables in and out of fxns
+x:integer = 5;
+y:integer;
+z:char = 'A';
+fxn: function void () =
+{
+	x:integer;
+	y:integer = 16;
+	w:boolean = true;
+	q:boolean;
+}
+
+===[good2.bminor Output]===
+Parse successful!
+
+
+
+
+===[good3.bminor Input]===
+// produces correct precedence of operations
+
+main: function void () = {
+	x:integer = 5;
+	y:integer = 4;
+	if(true || false && true)
+	{
+		x = 6;
+		
+	}
+}
+
+===[good3.bminor Output]===
+Parse successful!
+
+
+
+
+===[good4.bminor Input]===
+// produces correct precedence of operations
+
+main: function void() = {
+	x:integer = 5;
+	y:integer = 4;
+	if(!((4*x^5 + 4) - 4 >= 1))
+	{
+		x = 6;
+		
+	}
+}
+
+===[good4.bminor Output]===
+Parse successful!
+
+
+
+
+===[good5.bminor Input]===
+// produces correct precedence of operations
+
+main: function void() = {
+	x:integer = 5;
+	y:integer = 4;
+	z:boolean  = true || -(4*x^5) + (4 - 4) >= 16 - 6 * 3 + x && y^2 == 16;
+}
+
+===[good5.bminor Output]===
+Parse successful!
+
+
+
+
+===[good6.bminor Input]===
+// test block creations
+x:integer;
+main:function void() = {
+	for(;;)
+	{
+		x:integer = 5;
+		{
+			x:integer = 6;
+			print x;
+		}
+	}
+
+	if(x > 5)
+	{
+		x++;
+	}
+}
+funct2: function void() = {
+	{
+		print "hello";
+	}
+	if(x > 5)
+		if(x < 5)
+		{
+			x++;
+		}
+	else
+	{
+		x++;
+		x--;
+	}		
+	
+}
+
+===[good6.bminor Output]===
+Parse successful!
+
+
+
+
+===[good7.bminor Input]===
+// basic if else works with & without blocks
+main:function void() = {
+	if( 10 < 20 )
+		print "hi";
+	else
+		print "hello";
+	if( 10 < 20 )
+	{
+		print "hi";
+	}
+	else
+	{
+		print "hello";
+	}
+}
+
+===[good7.bminor Output]===
+Parse successful!
+
+
+
+
+===[good8.bminor Input]===
+//solved if else works
+
+main: function void() = {
+	x:integer = 5;
+	if( 4 < 5 )
+		if( 10 < 20 )
+			for(x = 0; x < 5; x++)
+				if( 4 < 5 )
+					print "helloo\n";
+				else
+					print "hello\n";
+		else
+			print "goodbye";
+}
+
+===[good8.bminor Output]===
+Parse successful!
+
+
+
+
+===[good9.bminor Input]===
+//tests param lists
+fxn: function integer (x:integer)=
+{
+	return x++;
+}
+
+fxn2: function char (x:integer, y:char, z:boolean)=
+{
+	if(y=='z')
+		return 'Z';
+	else
+		return 'z';
+}
+
+fxn3: function char (x: array [] integer, y:char, z: array [] array [] boolean)=
+{
+	if(y=='z')
+		return 'Z';
+	else
+		return 'z';
+}
+
+
+===[good9.bminor Output]===
+Parse successful!
+
+
+
+
+====Bad Tests====
+===[bad1.bminor Input]===
+// two multiples should generate parse error
+main: function void() =
+{
+	x:integer = 5 ** 5;
+	print x;
+}
+
+===[bad1.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad10.bminor Input]===
+// test else without a if to match it
+x:integer;
+funct2: function void() = {
+			if(x < 5)
+			{
+				x++;
+			}
+			else
+			{
+				x++;
+				x--;
+			}
+		 
+	else 
+	{
+		print "error, this shouldn't work";
+	}
+			
+	
+}
+
+===[bad10.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad11.bminor Input]===
+// test function calls with wrong format in calls
+
+main: function void () =
+{
+	print x;
+	func3(4 y, z);
+}
+
+===[bad11.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad12.bminor Input]===
+//test functions without equal signs in definition
+main: function void () = {
+	print "goodbye";
+}
+main2:function void () {
+	print "hello";
+}
+
+===[bad12.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad13.bminor Input]===
+// test function without closing brace
+x:integer = 6;
+fxn:function void() =
+{
+	integer= 5; 
+	
+	
+}
+
+===[bad13.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad14.bminor Input]===
+// unmatched {
+x:function(y:integer)=
+{
+
+
+===[bad14.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad15.bminor Input]===
+//arrays must have brackets in decleration
+x:array integer = {1, 2,3,4};
+
+===[bad15.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad2.bminor Input]===
+// semicolon isn't a statement
+fxn:function void() =
+{
+	;
+}
+
+===[bad2.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad3.bminor Input]===
+// can't use anything but print in this form
+printf "hello world", x, y;
+
+===[bad3.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad4.bminor Input]===
+// for loop without correct # of args
+main:function void()=
+{
+	for(i=0; i++) {
+		print i;
+	}
+}
+
+===[bad4.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad5.bminor Input]===
+//print not seperated by ,'s
+x:intger = 5;
+main:function void()
+{
+	print x x "hello";
+}
+
+===[bad5.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad6.bminor Input]===
+// expressions must end with ;
+x:integer = 5;
+
+main:function void()=
+{
+	x++;
+	x++
+}
+
+===[bad6.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad7.bminor Input]===
+// if must be matched
+x:integer = 5;
+main:function void()=
+{
+	x++;
+	if(x > 5)
+}
+
+===[bad7.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad8.bminor Input]===
+//checking param lists
+main:function void("hello", x:integer) =
+{
+	print x;
+}
+
+===[bad8.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===[bad9.bminor Input]===
+//checking param lists with trailing ,
+main:function void(hello:string, )=
+{
+	print hello;
+}
+
+===[bad9.bminor Output]===
+parse error: syntax error
+Parse failed.
+
+
+
+
+===== SUMMARIZED RESULTS =====
+{
+  "student_tests": {
+    "Good": {
+      "correct": 10,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  },
+  "hidden_tests": {
+    "Good": {
+      "correct": 10,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 10,
+      "incorrect": 0
+    }
+  },
+  "common_tests": {
+    "Good": {
+      "correct": 15,
+      "incorrect": 0
+    },
+    "Bad": {
+      "correct": 15,
+      "incorrect": 0
+    }
+  }
+}
