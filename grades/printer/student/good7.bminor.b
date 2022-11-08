@@ -1,0 +1,13 @@
+f: function void () = {
+    if (x) {
+        for (;;) {
+            if (x) {
+                for (;;) {
+                    if (x) {
+                        p;
+                    }
+                }
+            }
+        }
+    }
+}

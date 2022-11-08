@@ -1,0 +1,15 @@
+n: integer;
+m: integer = 20;
+b: boolean;
+c: boolean = false;
+s: string;
+t: string = "world\n";
+d: char;
+e: char = 'x';
+f: auto = 10;
+x: array [] string;
+y: array [] string = {"a", "b", "c"};
+z: array [] array [] string = {{"a", "b", "c"},{"x", "y", "z"}};
+g: array [3] string;
+h: array [3] string = {"a", "b", "c"};
+i: array [2] array [3] string = {{"a", "b", "c"},{"x", "y", "z"}};

@@ -1,0 +1,3 @@
+f: function array [] integer (x: integer) = {
+    print;
+}

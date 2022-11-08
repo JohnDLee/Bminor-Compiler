@@ -1,0 +1,4 @@
+f: function void () = {
+    print;
+    print "xx";
+}

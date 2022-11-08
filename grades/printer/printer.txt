@@ -1,0 +1,732 @@
+=====STUDENT TESTS=====
+====Good Tests====
+===[good0.bminor Input]===
+
+===[good0.bminor Output]===
+Success! good0.bminor.a and good0.bminor.b are the same
+
+===[good1.bminor Input]===
+/* Check for minimum use of parentheses. And other uses */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+    r: integer;
+    b: boolean;
+
+    // Parens required
+    r = (x+y)/z;
+    r = x+(y+z);
+    b = (true||false) && (false||true);
+
+    // Parens not required
+    r = x+(y/z);
+    r = (x+y)+z;
+    b = (x+y) < (x+z);
+    b = (true&&false) || (false&&true);
+
+
+    // extra parens
+    // Parens required
+    r = ((x+y))/z;
+    r = (x)+((y+z));
+    b = (((true||false)) && ((false||true)));
+
+    // Parens not required
+    r = (x+((y/z)));
+    r = ((x+y))+z;
+    b = ((x+y)) < ((x+z));
+    b = ((true&&false)) || ((((false&&true))));
+}
+===[good1.bminor Output]===
+Success! good1.bminor.a and good1.bminor.b are the same
+
+===[good2.bminor Input]===
+/* Check for other forms of parentheses */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+    r: integer;
+    b: boolean;
+
+    r = x++++;
+    r = (x++)++;
+    r = f((x));
+    r = f((x = 1), (y = 2));
+    r = (x++)[x++];
+    r = (x+y)[x++];
+    r = (a[x++])[x++];
+    r = f(x, y);
+
+    r = e^3^4;
+    r = (e^3)^4;
+    r = e^(3^4);
+}
+===[good2.bminor Output]===
+Success! good2.bminor.a and good2.bminor.b are the same
+
+===[good3.bminor Input]===
+/* Check for even more parentheses forms */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+    r: integer;
+    b: boolean;
+
+    r = (1 + 2) > ((1 + 3) > (1 + 4));
+    r = ((1 + 2) > (1 + 3)) > (1 + 4);
+    r = true?false:false; 
+    r = (1) ? (true + false) : (false);
+    r = true? (false ? true:false) : false;
+
+    r = 1?2:4?5:6;
+
+    r:integer = {{1, (2)}, {1, 2, 3}};
+
+
+}
+===[good3.bminor Output]===
+Success! good3.bminor.a and good3.bminor.b are the same
+
+===[good4.bminor Input]===
+f: function void () = {
+    {{{{{{{return;}}}}}}}
+}
+===[good4.bminor Output]===
+Success! good4.bminor.a and good4.bminor.b are the same
+
+===[good5.bminor Input]===
+main: function void () = {
+
+    if (x + 1) {
+        if (x) 
+            if (z)
+                q;
+        else if (y + 1)
+            y;
+        else if (p) {
+            q;
+        }
+    } else
+        q;
+}
+===[good5.bminor Output]===
+Success! good5.bminor.a and good5.bminor.b are the same
+
+===[good6.bminor Input]===
+
+f: function void () = {
+    
+    print;
+    print ("xx");
+}
+===[good6.bminor Output]===
+Success! good6.bminor.a and good6.bminor.b are the same
+
+===[good7.bminor Input]===
+
+f: function void () = {
+    
+    if (x) 
+        for(;;) 
+            if(x) 
+                for(;;) 
+                    if(x) 
+                        p;
+}
+===[good7.bminor Output]===
+Success! good7.bminor.a and good7.bminor.b are the same
+
+===[good8.bminor Input]===
+
+f: function void () = {
+    
+    if (x) z; else if (x) z; else if (x) z; else z;
+}
+===[good8.bminor Output]===
+Success! good8.bminor.a and good8.bminor.b are the same
+
+===[good9.bminor Input]===
+
+f: function array [] integer (x: integer) = {
+    print;
+}
+===[good9.bminor Output]===
+Success! good9.bminor.a and good9.bminor.b are the same
+
+=====HIDDEN TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+/* A program is a sequence of declarations */
+/* Try a variety of variable declarations. */
+
+n: integer;
+m: integer = 20;
+
+b: boolean;
+c: boolean = false;
+s: string;
+t: string = "world\n";
+d: char;
+e: char = 'x';
+
+f: auto = 10;
+
+x: array [] string;
+y: array [] string = { "a", "b", "c" };
+z: array [] array [] string = { {"a","b","c"}, {"x","y","z"} };
+
+g: array [3] string;
+h: array [3] string = { "a", "b", "c" };
+i: array [2] array [3] string = { {"a","b","c"}, {"x","y","z"} };
+
+===[good1.bminor Output]===
+Success! good1.bminor.a and good1.bminor.b are the same
+
+===[good2.bminor Input]===
+/* Function prototypes are declarations without bodies. */
+
+ComputeAscii: function char ( c: char );
+
+GetLength: function integer ( s: string, i: integer );
+
+/* Function body has some code in it */
+
+GetArea: function integer ( width: integer, height: integer ) =
+{
+	return width * height;
+}
+
+===[good2.bminor Output]===
+Success! good2.bminor.a and good2.bminor.b are the same
+
+===[good3.bminor Input]===
+/* A function contains a sequence of statements */
+/* Some of those statements can be decls */
+
+simplefunc: function void () = {
+     x: integer;
+     y: integer = 20;
+     s: string = "hello world";
+     a: auto = 'x';
+}
+
+===[good3.bminor Output]===
+Success! good3.bminor.a and good3.bminor.b are the same
+
+===[good5.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 + x / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good5.bminor Output]===
+Success! good5.bminor.a and good5.bminor.b are the same
+
+===[good6.bminor Input]===
+/* Try several variations of for-loops */
+
+simplefunc: function void (r: integer, s: integer, t: integer ) = {
+
+    i: integer;
+
+    for( i=0; i<r; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<s; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<r; ) {
+        print i,"\n";
+        i++;
+    }
+
+    for(;;) print "forever!\n";
+}
+
+===[good6.bminor Output]===
+Success! good6.bminor.a and good6.bminor.b are the same
+
+===[good7.bminor Input]===
+/* Test various nestings of if-else statements */
+
+testit: function boolean ( x: integer, y: integer ) = {
+
+	/* If statement without braces */
+	if( x<y ) print "less\n"; else print "low\n";
+
+	/* If statement with braces */
+	if( x<y ) { print "less\n"; } else { print "low\n"; }
+
+	/* This statement should print nothing */
+        if(20<10) if(10<20) print "incorrect!"; else print "dangling else!";
+
+	/* statements and decls inside of if-else */
+
+        if( x>y ) {
+              i: integer;
+              for(i=0;i<x;i++) print i, "\n";
+        } else {
+              i: integer;
+              for(i=0;i<y;i++) print i, "\n";
+        }
+
+	/* A decl can come after a few statements */
+	i: integer;
+
+	/* try the other way around */
+	for(i=0;i<x;i++) {
+              if( i<x ) print "small"; else print "large";
+        }
+
+        return true;
+}
+
+===[good7.bminor Output]===
+Success! good7.bminor.a and good7.bminor.b are the same
+
+===[good4.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 - x / y;
+
+     r: integer = x + (y + z);
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x <= y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good4.bminor Output]===
+Success! good4.bminor.a and good4.bminor.b are the same
+
+===[good9.bminor Input]===
+/* Check for minimum use of parentheses. */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+          r: integer;
+	  b: boolean;
+
+          // Parens required
+	  r = (x+y)/z;
+	  r = x+(y+z);
+	  b = (true||false) && (false||true);
+
+          // Parens not required
+	  r = x+(y/z);
+	  r = (x+y)+z;
+	  b = (x+y) < (x+z);
+	  b = (true&&false) || (false&&true);
+
+}
+
+===[good9.bminor Output]===
+Success! good9.bminor.a and good9.bminor.b are the same
+
+===[good8.bminor Input]===
+/* Now try some expressions */
+
+x: integer = 65;
+s: string = "hello";
+b: boolean = false;
+
+min: function integer ( a: integer, b: integer ) =
+{
+	if( a<b ) return a; else return b;
+}
+
+testfunc: function void ( z: integer ) =
+{
+	// Nested integer operators.
+	y: integer = x*(x*10 + 55%6 + z/10);
+	print "y: ", y, "\n";
+
+	// Nested boolean operations.
+	c: boolean = ( x<100 && y>200 ) || !(b=true);
+	print "c: ", c, "\n";
+
+	// Boolean operations on strings?
+	d: boolean = (s == "goodbye");
+	print "d: ", d, "\n";
+
+	// Can we stack up assignments?
+	z = y = x;
+
+	a: array [100] integer;
+
+	// Function calls and array accesses:
+	y = min(a[10],a[20]);
+
+	// Ternary operator
+	q: boolean = (z<10) ? true : false;
+
+	r: boolean = (z>10) ? min(a[10], a[20]) : min(a[20], a[10]);
+}
+
+===[good8.bminor Output]===
+Success! good8.bminor.a and good8.bminor.b are the same
+
+===[good10.bminor Input]===
+/* Try accesssing arrays of various sizes; */
+
+a: array [10] integer = {100,200,300,400,500,600,700,800,900};
+b: array [10] integer;
+c: array [10] array [10] integer;
+
+testfunc: function void () = {
+    i: integer;
+    j: integer;
+
+    for(i=0;i<10;i++) {
+        b[i] = a[i] * 10;
+    }
+
+    for(i=0;i<5;i++) {
+        b[i*2] = a[i] + b[i];
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            c[i][j] = i*j;
+        }
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            print c[i][j];
+            print " ";
+        }
+        print "\n";
+    }
+}
+
+===[good10.bminor Output]===
+Success! good10.bminor.a and good10.bminor.b are the same
+
+=====COMMON TESTS=====
+====Good Tests====
+===[good1.bminor Input]===
+/* A program is a sequence of declarations */
+/* Try a variety of variable declarations. */
+
+n: integer;
+m: integer = 20;
+
+b: boolean;
+c: boolean = true;
+s: string;
+t: string = "hello\n";
+d: char;
+e: char = 'x';
+
+x: array [] string;
+y: array [] string = { "a", "b", "c" };
+z: array [] array [] string = { {"a","b","c"}, {"x","y","z"} };
+
+g: array [3] string;
+h: array [3] string = { "a", "b", "c" };
+i: array [2] array [3] string = { {"a","b","c"}, {"x","y","z"} };
+
+===[good1.bminor Output]===
+Success! good1.bminor.a and good1.bminor.b are the same
+
+===[good10.bminor Input]===
+/* Try accesssing arrays of various sizes; */
+
+a: array [10] integer = {100,200,300,400,500,600,700,800,900};
+b: array [10] integer;
+c: array [10] array [10] integer;
+
+testfunc: function void () = {
+    i: integer;
+    j: integer;
+
+    for(i=0;i<10;i++) {
+        b[i] = a[i] * 10;
+    }
+
+    for(i=0;i<5;i++) {
+        b[i*2] = a[i] + b[i];
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            c[i][j] = i*j;
+        }
+    }
+
+    for(j=0;j<10;i++) {
+        for(i=0;i<10;i++) {
+            print c[i][j];
+            print " ";
+        }
+        print "\n";
+    }
+}
+
+===[good10.bminor Output]===
+Success! good10.bminor.a and good10.bminor.b are the same
+
+===[good2.bminor Input]===
+/* Function prototypes are declarations without bodies. */
+
+ComputeAscii: function char ( c: char );
+
+GetLength: function integer ( s: string, i: integer );
+
+/* Function body has some code in it */
+
+GetArea: function integer ( width: integer, height: integer ) =
+{
+	return width * height;
+}
+
+===[good2.bminor Output]===
+Success! good2.bminor.a and good2.bminor.b are the same
+
+===[good3.bminor Input]===
+/* A function contains a sequence of statements */
+/* Some of those statements can be decls */
+
+simplefunc: function void () = {
+     x: integer;
+     y: integer = 20;
+     s: string = "hello world";
+}
+
+===[good3.bminor Output]===
+Success! good3.bminor.a and good3.bminor.b are the same
+
+===[good4.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 + x / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good4.bminor Output]===
+Success! good4.bminor.a and good4.bminor.b are the same
+
+===[good5.bminor Input]===
+/* A function contains a sequence of statements */
+/* Try decls and stmts and exprs together. */
+
+simplefunc: function boolean ( x: integer, y: integer ) = {
+
+     // A declaration
+     z: integer = x * y;
+
+     // An expression with a semicolon
+     z = 16 + x / y;
+
+     // Print statement
+     print "input is: ", x, " and ", y, "\n";
+
+     // Simple if-else statement
+     if( x < y ) {
+         return true;
+     } else {
+         return false;
+     }
+
+}
+
+===[good5.bminor Output]===
+Success! good5.bminor.a and good5.bminor.b are the same
+
+===[good6.bminor Input]===
+/* Try several variations of for-loops */
+
+simplefunc: function void (r: integer, s: integer, t: integer ) = {
+
+    i: integer;
+
+    for( i=0; i<r; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<s; i++ ) {
+        print i,"\n";
+    }
+
+    i=0;
+    for( ; i<r; ) {
+        print i,"\n";
+        i++;
+    }
+
+    for(;;) print "forever!\n";
+}
+
+===[good6.bminor Output]===
+Success! good6.bminor.a and good6.bminor.b are the same
+
+===[good7.bminor Input]===
+/* Test various nestings of if-else statements */
+
+testit: function boolean ( x: integer, y: integer ) = {
+
+	/* If statement without braces */
+	if( x<y ) print "less\n"; else print "low\n";
+
+	/* If statement with braces */
+	if( x<y ) { print "less\n"; } else { print "low\n"; }
+
+	/* This statement should print nothing */
+        if(20<10) if(10<20) print "incorrect!"; else print "dangling else!";
+
+	/* statements and decls inside of if-else */
+
+        if( x>y ) {
+              i: integer;
+              for(i=0;i<x;i++) print i, "\n";
+        } else {
+              i: integer;
+              for(i=0;i<y;i++) print i, "\n";
+        }
+
+	/* A decl can come after a few statements */
+	i: integer;
+
+	/* try the other way around */
+	for(i=0;i<x;i++) {
+              if( i<x ) print "small"; else print "large";
+        }
+
+        return true;
+}
+
+===[good7.bminor Output]===
+Success! good7.bminor.a and good7.bminor.b are the same
+
+===[good8.bminor Input]===
+/* Now try some expressions */
+
+x: integer = 65;
+s: string = "hello";
+b: boolean = false;
+
+min: function integer ( a: integer, b: integer ) =
+{
+	if( a<b ) return a; else return b;
+}
+
+testfunc: function void ( z: integer ) =
+{
+	// Nested integer operators.
+	y: integer = x*(x*10 + 55%6 + z/10);
+	print "y: ", y, "\n";
+
+	// Nested boolean operations.
+	c: boolean = ( x<100 && y>200 ) || !(b=true);
+	print "c: ", c, "\n";
+
+	// Boolean operations on strings?
+	d: boolean = (s == "goodbye");
+	print "d: ", d, "\n";
+
+	// Can we stack up assignments?
+	z = y = x;
+
+	a: array [100] integer;
+
+	// Function calls and array accesses:
+	y = min(a[10],a[20]);
+}
+
+===[good8.bminor Output]===
+Success! good8.bminor.a and good8.bminor.b are the same
+
+===[good9.bminor Input]===
+/* Check for minimum use of parentheses. */
+
+testfunc: function void ( x: integer, y:integer, z:integer ) = {
+
+          r: integer;
+	  b: boolean;
+
+          // Parens required
+	  r = (x+y)/z;
+	  r = x+(y+z);
+	  b = (true||false) && (false||true);
+
+          // Parens not required
+	  r = x+(y/z);
+	  r = (x+y)+z;
+	  b = (x+y) < (x+z);
+	  b = (true&&false) || (false&&true);
+
+}
+
+===[good9.bminor Output]===
+Success! good9.bminor.a and good9.bminor.b are the same
+
+===== SUMMARIZED RESULTS =====
+{
+  "student_tests": {
+    "correct": 10,
+    "incorrect": 0
+  },
+  "hidden_tests": {
+    "correct": 10,
+    "incorrect": 0
+  },
+  "common_tests": {
+    "correct": 10,
+    "incorrect": 0
+  }
+}

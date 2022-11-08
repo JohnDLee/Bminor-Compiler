@@ -1,0 +1,11 @@
+testfunc: function void (x: integer, y: integer, z: integer) = {
+    r: integer;
+    b: boolean;
+    r=1+2>(1+3>1+4);
+    r=1+2>1+3>1+4;
+    r=true?false:false;
+    r=1?true+false:false;
+    r=true?(false?true:false):false;
+    r=1?2:4?5:6;
+    r: integer = {{1, 2},{1, 2, 3}};
+}
