@@ -1,0 +1,7 @@
+/* multiple array indexing */
+a: array [2] array [2] integer = {{1,2}, {1,2}};
+
+main: function void () = {
+
+	a[1][1] = 4;
+}

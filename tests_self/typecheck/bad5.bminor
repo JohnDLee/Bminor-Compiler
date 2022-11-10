@@ -1,0 +1,6 @@
+/* Mismatch of arr type. */
+
+x: array [10] integer = {1, 2, 3};
+
+	
+

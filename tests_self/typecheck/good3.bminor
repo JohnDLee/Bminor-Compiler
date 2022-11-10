@@ -1,0 +1,9 @@
+/* Test constants */
+
+x: integer = 5;
+y: integer = 10;
+z: char = 'c';
+f: boolean = true;
+q: string = "string";
+
+

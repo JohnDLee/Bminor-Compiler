@@ -1,0 +1,18 @@
+/* Assign an auto expression to local variable, but it comes after. */
+
+x: integer = 5;
+y: integer = 10;
+
+test: function auto();
+
+main: function void ()=
+{
+	x:integer = y * 10 + 15 - test();
+}
+
+test: function auto () =
+{
+	return 5;
+}
+	
+

@@ -1,0 +1,3 @@
+/* non constant array init */
+
+x: array [30 + 40] integer;

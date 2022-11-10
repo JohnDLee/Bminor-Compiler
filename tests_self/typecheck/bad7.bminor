@@ -1,0 +1,3 @@
+/* Functions cannot return functions */
+
+test1:function function integer (a:integer) (a:integer, b:integer);

@@ -13,7 +13,7 @@
 int main(int argc, char* argv[]){
     
     if (argc != 3) {
-        fprintf(stderr, "bminor> invalid input: incorrect number of arguments\nusage:\n\t./bminor -parse <program.bminor>\n");
+        fprintf(stderr, "bminor> invalid input: incorrect number of arguments\nusage:\n\t./bminor -<scan|parse|print|resolve|typecheck> <program.bminor>\n");
         return 1;
     }
 
@@ -33,11 +33,15 @@ int main(int argc, char* argv[]){
     }
     // printing
     else if (strcmp(argv[1], "-print") == 0) {
-        if (yyparse() == 0) {
-            decl_print(ast_head, 0);
-            return 0;
-        } 
-        return 1;
+        return pprint();
+    } 
+    // name resolution
+    else if (strcmp(argv[1], "-resolve") == 0) {
+        return resolve();
+    }
+    // type check
+    else if (strcmp(argv[1], "-typecheck") == 0) {
+        return typecheck();
     }
     else {
         fprintf(stderr, "bminor> you must provide one of (-print, -parse, -scan) as a flag\n");

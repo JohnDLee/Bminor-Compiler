@@ -1,0 +1,13 @@
+/* Tests overassignment */
+
+x: array [5] integer = {1,2,3,4,5};
+y: array [5] array [5] integer;
+
+main: function void () =
+{
+	i: integer;
+	for (i = 1;;i++) {
+		y[i] = x;
+	}
+	
+}

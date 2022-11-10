@@ -1,0 +1,3 @@
+/* cannot have arrays of different sizes nested */
+
+a: array [2] array [2] integer = {{1,2}, {1,2,3}};

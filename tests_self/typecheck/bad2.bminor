@@ -1,0 +1,4 @@
+/* nonconstant globals */
+
+x: integer = 1 + 2;
+y: integer = x + x;

@@ -1,0 +1,4 @@
+/* cannot have arrays of functions */
+x: function void ();
+y: function void ();
+z: array [2] integer = {x, y};

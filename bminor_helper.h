@@ -7,6 +7,7 @@
 #include "stmt.h"
 #include "type.h"
 #include "symbol.h"
+#include "scope.h"
 
 #include "token.h"
 #include <stdio.h>
@@ -22,13 +23,28 @@ extern struct decl * ast_head;
 
 
 /* scanner funcs */
+int scan(void);
 // Converts tokens to strings
 int tokToString(token_t token, char* yytext);
 // printformatting
 void print1(char* token_str, char* yytext);
-int scan(void);
+
 
 /* parser funcs */
 int parse(void);
+
+/* pretty printer funcs */
+int pprint(void);
+// indent output by indent
+void indent_line(int indent);
+
+/* resolve funcs */
+int resolve(void);
+extern int resolve_err;
+
+/* typecheck funcs */
+int typecheck(void);
+extern int type_err;
+
 
 #endif

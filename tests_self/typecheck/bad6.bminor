@@ -1,0 +1,6 @@
+/* unable to use {} notation in local*/
+
+main: function void () = {
+
+	x: array [4] integer = {1,2,3,4, 5};
+}

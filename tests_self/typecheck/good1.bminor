@@ -1,0 +1,13 @@
+/* Assign integer expression to local variable/ typechecking with function call. */
+
+x: integer = 5;
+y: integer = 10;
+test: function integer ();
+main: function void ()=
+{
+	x: integer = x * y * test();
+}
+
+
+	
+

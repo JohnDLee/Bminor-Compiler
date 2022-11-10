@@ -1,0 +1,6 @@
+/* assigning array */
+
+a: array [2] array [2] integer = {{1,2}, {1,2}};
+main: function void () = {
+	b: array [2] array [2] integer = a;
+}

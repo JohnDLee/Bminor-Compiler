@@ -171,7 +171,7 @@ expr_main   :   expr_8   { $$ = $1; }
             ;
 
 expr_list   :  expr_main TOKEN_COMMA expr_list  { $$ = expr_create(EXPR_ARG, $1, $3, 8); }
-            |   expr_main                       { $$ = expr_create(EXPR_ARG, $1, 0, 8); }
+            |  expr_main                        { $$ = expr_create(EXPR_ARG, $1, 0, 8); }
             ;
 
 expr_eps    :   expr_list       { $$ = $1; }

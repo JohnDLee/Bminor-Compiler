@@ -1,0 +1,13 @@
+/* auto handling */
+
+
+
+main: function integer () = {
+	a: auto = 40;
+	b: auto = a;
+	c: auto = b;
+
+	return a;
+	return b;
+	return c;
+}

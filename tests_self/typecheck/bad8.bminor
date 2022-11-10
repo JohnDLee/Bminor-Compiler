@@ -1,0 +1,3 @@
+/* Function arguments cannot have functions */
+
+test1:function void (a: function void (), b:integer);

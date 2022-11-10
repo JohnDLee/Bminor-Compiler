@@ -1,0 +1,15 @@
+/* proper program */
+
+
+
+main: function integer () = {
+	x: integer;
+	x = 1;
+	if (x == 1) {
+		print x, x, x;
+	} else if (x != 1) {
+		print -x, -x, -x;
+	}
+	
+	return 0;
+}

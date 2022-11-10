@@ -1,0 +1,8 @@
+/* Type of return statement must match return type of function. */
+
+main: function auto () = {
+	if (1 == 1)
+		return 1;
+	else 
+		return 'c';
+}

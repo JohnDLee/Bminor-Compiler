@@ -187,3 +187,31 @@ int parse(void) {
 		return 1;
 	}
 }
+
+int pprint(void ) {
+    if (yyparse() == 0) {
+        decl_print(ast_head, 0);
+        return 0;
+        } 
+    return 1;
+}
+
+int resolve(void) {
+    if (yyparse() == 0) {
+        scope_enter(); // create global scope
+        decl_resolve(ast_head);
+        return resolve_err;
+    }
+    return 1;
+}
+
+
+
+int typecheck(void) {
+    
+    if (!resolve()) {
+        decl_typecheck(ast_head);
+        return type_err; 
+    }
+    return 1;
+}
