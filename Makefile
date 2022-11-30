@@ -126,6 +126,6 @@ clean:
 	rm -rf tests/typecheck/*.out tests_self/typecheck/*out
 # Code Gen
 	rm -rf scratch.o label.o
-	rm -rf tests_self/codegen/*.exe tests_self/codegen/*.s tests_self/codegen/*.out
+	rm -rf tests_self/codegen/*.exe tests_self/codegen/*.s tests_self/codegen/*.out tests_self/codegen/library.o
 # bminor
 	rm -rf bminor
