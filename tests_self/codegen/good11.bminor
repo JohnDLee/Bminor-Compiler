@@ -1,0 +1,22 @@
+/* address based && array indexing movement */
+
+arr: array [3] integer = {1,2,3};
+s: string = "string\n";
+main: function integer () = {
+
+    // address (LEA)
+    x: array [3] integer = arr; 
+    y: string = s;
+    z: string = "LOL\n";
+
+    // not address (MOVQ)
+    t: integer = 6;
+    c: char = 'c';
+
+    // print outputs to check
+    print s, y, "string\n", "-----------\n";
+    print x[0], ' ', x[1], ' ', x[2], '\n';
+    print arr[0], ' ', arr[1], ' ', arr[2], '\n';
+
+    return 0;
+}

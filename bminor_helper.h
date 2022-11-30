@@ -30,21 +30,25 @@ int tokToString(token_t token, char* yytext);
 void print1(char* token_str, char* yytext);
 
 
-/* parser funcs */
+// * parser funcs
 int parse(void);
 
-/* pretty printer funcs */
+// * pretty printer funcs
 int pprint(void);
 // indent output by indent
 void indent_line(int indent);
 
-/* resolve funcs */
+// * resolve funcs
 int resolve(void);
 extern int resolve_err;
 
-/* typecheck funcs */
+// * typecheck funcs 
 int typecheck(void);
 extern int type_err;
+
+// * codegen funcs
+int codegen(void);
+FILE * outfile;
 
 
 #endif

@@ -1,0 +1,17 @@
+// Returns + local literals
+
+main: function integer () = {
+    return 0;
+}
+s: function string () = {
+    return "LOL\n";
+}
+x: function char () = {
+    return '\n';
+}
+y: function boolean () = {
+    return true;
+}
+z: function integer () = {
+    return 1;
+}

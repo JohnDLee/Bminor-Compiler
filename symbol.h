@@ -13,13 +13,18 @@ struct symbol {
 	struct type *type;
 	const char *name;
 	int which;
+	int total;
 	int prototype;
 };
 
 #include "type.h"
+#include <string.h>
 
+// * Name Resolution, creating symbols
 struct symbol * symbol_create( symbol_t kind, struct type *type, const char *name );
 
+// * Code Gen
+const char* symbol_codegen(struct symbol * s);
 
 
 #endif

@@ -32,17 +32,24 @@ struct stmt {
 
 extern int type_err;
 
+// * AST Creation
 // creates a stmt node
 struct stmt * stmt_create( stmt_t kind, struct decl *decl, struct expr *init_expr, struct expr *expr, struct expr *next_expr, struct stmt *body, struct stmt *else_body, struct stmt *next );
-// prints a stmt
+
+// * pprints a stmt
 void stmt_print( struct stmt *s, int indent );
 // wrap a statement if it is a non-STMT_BLOCK with a STMT_BLOCK
 struct stmt * stmt_wrap( struct stmt *s );
-// resolves a stmt
+
+// * name resolution of a stmt
 void stmt_resolve( struct stmt *s );
 
-/* typechecking */
+// * typechecking 
 // typecheck driver for stmt
 void stmt_typecheck( struct stmt *s, struct decl* func );
+
+// * codegen
+void stmt_codegen(struct stmt *s, const char* func_epilogue);
+extern FILE* outfile;
 
 #endif

@@ -3,8 +3,8 @@
 # Purpose: Makefile to compile B-Minor Compiler
 
 # compile/link all
-bminor: lex.yy.o main.o bminor_helper.o parser.o token.h decl.o type.o stmt.o param_list.o expr.o symbol.o hash_table.o scope.o
-	gcc lex.yy.o main.o bminor_helper.o parser.o decl.o type.o stmt.o param_list.o expr.o symbol.o hash_table.o scope.o -o bminor 
+bminor: lex.yy.o main.o bminor_helper.o parser.o token.h decl.o type.o stmt.o param_list.o expr.o symbol.o hash_table.o scope.o scratch.o label.o library.o
+	gcc lex.yy.o main.o bminor_helper.o parser.o decl.o type.o stmt.o param_list.o expr.o symbol.o hash_table.o scope.o scratch.o label.o -o bminor 
 
 ########
 # Main #
@@ -93,6 +93,24 @@ typecheck_test: bminor
 	./tests/typecheck/run_all_tests.sh 
 	./tests_self/typecheck/run_all_tests.sh
 
+############
+# Code Gen #
+############
+
+label.o: label.h label.c
+	gcc label.c -c -o label.o -Wall
+
+scratch.o: scratch.h scratch.c
+	gcc scratch.c -c -o scratch.o -Wall
+
+library.o: library.c
+	gcc library.c -c -o library.o -Wall
+
+codegen_test: bminor
+	./tests_self/codegen/run_all_tests.sh
+
+all_tests: typecheck_test resolve_test print_test parse_test scan_test
+
 clean:
 # scanner
 	rm -rf lex.yy.c lex.yy.o
@@ -106,5 +124,8 @@ clean:
 	rm -rf decl.o type.o stmt.o param_list.o expr.o symbol.o scope.o hash_table.o
 	rm -rf tests/printer/*.out tests_self/printer/*.out
 	rm -rf tests/typecheck/*.out tests_self/typecheck/*out
+# Code Gen
+	rm -rf scratch.o label.o
+	rm -rf tests_self/codegen/*.exe tests_self/codegen/*.s tests_self/codegen/*.out
 # bminor
 	rm -rf bminor

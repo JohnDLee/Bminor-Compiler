@@ -1,0 +1,13 @@
+/* ternary */
+
+main: function integer () = {
+
+    x: integer = true ? 1 : 2;
+    print x, " | ", 1, '\n';
+    y: integer = false ? 1 : 2;
+    print y, " | ", 2, '\n';
+    z: integer = x < 3 ? 5 : 10;
+    print z, " | ", 5, '\n';
+    return 0;
+
+}

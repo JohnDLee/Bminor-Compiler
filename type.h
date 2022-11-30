@@ -27,14 +27,15 @@ struct type {
 };
 
 
-
+// * AST Creation
 // creates a type node
 struct type * type_create( type_t kind, struct type *subtype, struct param_list *params, struct expr *arr_val);
 
-// prints a type node
+// * pprints a type node
 void          type_print( struct type *t );
 
-// type checks
+// * typechecking
+// checks two types are equal
 int type_equals( struct type *a, struct type *b );
 // copy a type struct
 struct type * type_copy( struct type *t );

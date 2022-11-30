@@ -13,7 +13,12 @@ void scope_enter() {
     ht_node->ht = hash_table_create(0, 0);
     // level
     ht_node->level = stack_top ? stack_top->level + 1 : 1; 
-    ht_node->num_vars = 1;
+    if (stack_top && stack_top->level > 2) {
+        // if the current top is not global or args, then keep track from prev
+        ht_node->num_vars = stack_top->num_vars;
+    } else {
+        ht_node->num_vars = 0;
+    }
     // next
     ht_node->next = stack_top;
 
@@ -21,11 +26,19 @@ void scope_enter() {
 }
 
 void scope_exit() {
+    // update the num_vars from previous scope
+    if (stack_top->level > 2) {
+        stack_top->next->num_vars = stack_top->num_vars;
+    }
     stack_top =  stack_top->next;
 }
 
 int scope_level() {
     return stack_top->level;
+}
+
+int scope_num_vars() {
+    return stack_top->num_vars;
 }
 
 void scope_bind( const char *name, struct symbol *sym ) {

@@ -21,24 +21,35 @@ struct decl {
 #include "symbol.h"
 #include "param_list.h"
 #include "bminor_helper.h"
+#include "label.h"
+#include "scratch.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 
+// * AST construction
 // creates a decl node
 struct decl * decl_create( const char *name, struct type *type, struct expr *value, struct stmt *code, struct decl *next );
 
-// prints decl node
+// * pprints decl node
 void decl_print( struct decl *d, int indent );
 
-// name resolve decls
+// * name resolve decls
 void decl_resolve( struct decl *d );
 
-// typecheck decls.
+// * typecheck decls.
 void decl_typecheck(struct decl *d);
-// checks if expression of decl is constant
-int decl_constant_expr(struct expr *e);
+
+
+// * codegen
+extern FILE* outfile;
+// global codegen
+void decl_codegen_global(struct decl *d);
+// local codegen
+void decl_codegen_local(struct decl *d);
+
+
 #endif
 
 

@@ -31,6 +31,7 @@ struct expr * expr_create_name( const char *n ) {
     expr_node->literal_value = 0;
     expr_node->string_literal = NULL;
     expr_node->symbol = NULL;
+    expr_node->reg=-1;
     return expr_node;
 }
 struct expr * expr_create_integer_literal( int c ) {
@@ -45,6 +46,7 @@ struct expr * expr_create_integer_literal( int c ) {
     expr_node->string_literal = NULL;
     expr_node->symbol = NULL;
     expr_node->name = NULL;
+    expr_node->reg=-1;
     
     return expr_node;
 }
@@ -60,7 +62,7 @@ struct expr * expr_create_boolean_literal( int c ) {
     expr_node->string_literal = NULL;
     expr_node->symbol = NULL;
     expr_node->name = NULL;
-    
+    expr_node->reg=-1;
     
     return expr_node;
 }
@@ -76,6 +78,7 @@ struct expr * expr_create_char_literal( char c ) {
     expr_node->string_literal = NULL;
     expr_node->symbol = NULL;
     expr_node->name = NULL;
+    expr_node->reg=-1;
 
     return expr_node;
 }
@@ -91,6 +94,7 @@ struct expr * expr_create_string_literal( const char *str ) {
     expr_node->symbol = NULL;
     expr_node->name = NULL;
     expr_node->literal_value = 0;
+    expr_node->reg=-1;
     
     return expr_node;
 }
@@ -273,22 +277,7 @@ void expr_print( struct expr *e ) {
             printf("'");
             break;
         case EXPR_STR_LIT:
-            printf("\"");
-            // iterate through each char and print appropriate char
-            int i = 0;
-            for (i = 0; i < strlen(e->string_literal); i++ ) {
-                if (e->string_literal[i] == '\0') {
-                    printf("\\0");
-                } else if (e->string_literal[i] == '\n') {
-                    printf("\\n");
-                } else if (e->string_literal[i] == '"') {
-                    printf("\\\"");
-                } else {
-                    // lose and irrelevant \'s
-                    printf("%c", e->string_literal[i]);
-            }
-            }
-            printf("\"");
+            expr_unescape_string(e->string_literal, stdout);
             break;
         case EXPR_GROUP:
             // ignore parens if they are doubled
@@ -305,6 +294,25 @@ void expr_print( struct expr *e ) {
             exit(1);
 
     }
+}
+
+void expr_unescape_string(const char* s, FILE* fp) {
+    fprintf(fp, "\"");
+    // iterate through each char and print appropriate char
+    int i = 0;
+    for (i = 0; i < strlen(s); i++ ) {
+        if (s[i] == '\0') {
+            fprintf(fp,"\\0");
+        } else if (s[i] == '\n') {
+            fprintf(fp, "\\n");
+        } else if (s[i] == '"') {
+            fprintf(fp, "\\\"");
+        } else {
+            // lose and irrelevant \'s
+            fprintf(fp, "%c", s[i]);
+    }
+    }
+    fprintf(fp, "\"");
 }
 
 void expr_print_bin( struct expr *e, char * op) {
@@ -425,6 +433,15 @@ struct type * expr_typecheck( struct expr *e ) {
                 break;
             case EXPR_INCREMENT:
             case EXPR_DECREMENT:
+                if (e->left->kind != EXPR_ID && e->left->kind != EXPR_INDEX) {
+                    fprintf(stdout, "typecheck error> %s can only be called on values which are stored.\n", expr_action_str(e->kind));
+                    type_err = 1;
+                }
+                if (lt->kind != TYPE_INTEGER) {
+                    expr_err_msg(e, lt, NULL, "integer");
+                }
+                result = type_create(TYPE_INTEGER, 0, 0, 0);
+                break;
             case EXPR_NEGATION:
                 if (lt->kind != TYPE_INTEGER) {
                     expr_err_msg(e, lt, NULL, "integer");
@@ -526,7 +543,15 @@ struct type * expr_typecheck( struct expr *e ) {
                 break;
             case EXPR_ARG:
                 // just copy up the left value anyways
-                result = type_copy(lt);
+                if (lt->kind == TYPE_AUTO) {
+                    printf( "typecheck error> an argument (");
+                    expr_print(e->left);
+                    printf("cannot have type auto\n");
+                    type_err = 1;
+                    result = type_create(TYPE_INTEGER, 0, 0, 0);
+                } else {
+                    result = type_copy(lt);
+                }
                 break;
             case EXPR_ASSIGN:
                 // Deal with Auto
@@ -566,6 +591,7 @@ struct type * expr_typecheck( struct expr *e ) {
                 break;
             case EXPR_BRACE:
                 // base level w/ only the single array
+        
                 if (e->left->kind == EXPR_ARG) {
                     int counter = 0;
                     struct expr *cur = e->left;
@@ -619,8 +645,8 @@ struct type * expr_typecheck( struct expr *e ) {
                         // assume that they are the same for continued error checking.
                         result = type_create(TYPE_ARRAY, result, 0, expr_create_integer_literal(counter));
                     }
-
-                } if (e->left->kind == EXPR_BRACE) {
+                // if it is already an expr brace
+                } else if (e->left->kind == EXPR_BRACE) {
                     result = type_copy(lt);
                     
                     if (e->right && !e->literal_value) {
@@ -804,4 +830,314 @@ int expr_constant( struct expr* e) {
         default:
             return 0;
     }
+}
+
+
+void expr_codegen(struct expr* e) {
+    if (!e) return;
+    struct expr* el = e->left;
+    struct expr* er = e->right;
+    int l1, l2;
+
+    switch (e->kind) {
+        case EXPR_ADD:
+            expr_codegen(el);
+            expr_codegen(er);
+            fprintf(outfile, "\tADDQ %%%s, %%%s\n", scratch_name(er->reg), scratch_name(el->reg));
+            scratch_free(er->reg);
+            e->reg = el->reg;
+            break;
+        case EXPR_SUB:
+            expr_codegen(el);
+            expr_codegen(er);
+            fprintf(outfile, "\tSUBQ %%%s, %%%s\n", scratch_name(er->reg), scratch_name(el->reg));
+            scratch_free(er->reg);
+            e->reg = el->reg;
+            break;
+        case EXPR_MUL:
+            expr_codegen(el);
+            expr_codegen(er);
+            // move left into rax
+            fprintf(outfile, "\tMOVQ %%%s, %%rax\n", scratch_name(el->reg));
+            scratch_free(el->reg);
+            // mult
+            fprintf(outfile, "\tIMULQ %%%s\n", scratch_name(er->reg));
+            // retrieve low 64
+            fprintf(outfile, "\tMOVQ %%rax, %%%s\n", scratch_name(er->reg));
+            e->reg = er->reg;
+            break;
+        case EXPR_DIV:
+            expr_codegen(el);
+            expr_codegen(er);
+            // move left into rax
+            fprintf(outfile, "\tMOVQ %%%s, %%rax\n", scratch_name(el->reg));
+            scratch_free(el->reg);
+            // sign extend
+            fprintf(outfile, "\tCQO\n");
+            // div
+            fprintf(outfile, "\tIDIVQ %%%s\n", scratch_name(er->reg));
+            // retrieve low 64
+            fprintf(outfile, "\tMOVQ %%rax, %%%s\n", scratch_name(er->reg));
+            e->reg = er->reg;
+            break;
+        case EXPR_INCREMENT:
+            //! MAKE SURE THIS WORKS WITH ASSIGN.s
+            expr_codegen(el);
+            // destructively increment
+            fprintf(outfile, "\tINCQ %%%s\n", scratch_name(el->reg));
+            // update value in appropriate saved location
+            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(el->reg), symbol_codegen(el->symbol));
+            e->reg = el->reg;
+            break;
+        case EXPR_DECREMENT:
+            expr_codegen(el);
+            // destructively increment
+            fprintf(outfile, "\tDECQ %%%s\n", scratch_name(el->reg));
+            // update value in appropriate saved location
+            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(el->reg), symbol_codegen(el->symbol));
+            e->reg = el->reg;
+            break;
+        case EXPR_INDEX:
+            expr_codegen(el);
+            expr_codegen(er);
+            fprintf(outfile, "\tMOVQ (%%%s,%%%s,8), %%%s\n", scratch_name(el->reg),scratch_name(er->reg),scratch_name(el->reg));
+            scratch_free(er->reg); 
+            e->reg = el->reg;
+            break;
+        // case EXPR_FCALL:
+        //     return "call function";
+        case EXPR_ARG:
+            expr_codegen(el);
+            e->reg = el->reg;
+            break;
+        case EXPR_NEGATION:
+            expr_codegen(el);
+            // invert using not and twos complement and add 1
+            fprintf(outfile, "\tNOTQ %%%s\n", scratch_name(el->reg));
+            fprintf(outfile, "\tADDQ $1, %%%s\n", scratch_name(el->reg));
+            e->reg = el->reg;
+            break;
+        case EXPR_EXPONENT: {
+            // construct as a function call
+            struct expr* fcall = expr_create(EXPR_FCALL, expr_create_name("integer_power"), expr_create(EXPR_ARG, el, expr_create(EXPR_ARG, er, NULL, 8), 8), 8);
+            expr_call_func(fcall);
+            e->reg = fcall->reg;
+        }
+            break;
+        case EXPR_MOD:
+            expr_codegen(el);
+            expr_codegen(er);
+            // move left into rax
+            fprintf(outfile, "\tMOVQ %%%s, %%rax\n", scratch_name(el->reg));
+            scratch_free(el->reg);
+            // sign extend
+            fprintf(outfile, "\tCQO\n");
+            // div
+            fprintf(outfile, "\tIDIVQ %%%s\n", scratch_name(er->reg));
+            // retrieve mod 64
+            fprintf(outfile, "\tMOVQ %%rdx, %%%s\n", scratch_name(er->reg));
+            e->reg = er->reg;
+            break;
+        case EXPR_GT:
+        case EXPR_GTE:
+        case EXPR_LT:
+        case EXPR_LTE:
+        case EXPR_EQ:
+        case EXPR_NOT_EQ:
+            expr_compare( e );
+            break;
+        case EXPR_AND:
+            expr_codegen( el );
+            expr_codegen( er );
+            // even though its bitwise, since they can only be 0 or 1 its fine
+            fprintf(outfile, "\tANDQ %%%s, %%%s\n", scratch_name(er->reg), scratch_name(el->reg));
+            e->reg = el->reg;
+            scratch_free(er->reg);
+            break;
+        case EXPR_OR:
+            expr_codegen( el );
+            expr_codegen( er );
+            // even though its bitwise, since they can only be 0 or 1 its fine
+            fprintf(outfile, "\tORQ %%%s, %%%s\n", scratch_name(er->reg), scratch_name(el->reg));
+            e->reg = el->reg;
+            scratch_free(er->reg);
+            break;
+        case EXPR_NOT:
+            expr_codegen( el );
+            // more complex since bitwise not is incorrect
+            l1 = label_create();
+            l2 = label_create();
+            fprintf(outfile, "\tCMPQ $0, %%%s\n", scratch_name(el->reg));
+            fprintf(outfile, "\tJE %s\n", label_name("", l1));
+            // was 1, now 0
+            fprintf(outfile, "\tMOVQ $0, %%%s\n", scratch_name(el->reg));
+            fprintf(outfile, "\tJMP %s\n", label_name("", l2));
+            // was 0, now 1
+            fprintf(outfile, "%s:\n", label_name("", l1));
+            fprintf(outfile, "\tMOVQ $1, %%%s\n", scratch_name(el->reg));
+            fprintf(outfile, "%s:\n", label_name("", l2));
+            e->reg = el->reg;
+            break;
+        case EXPR_ASSIGN:
+            expr_codegen(er);
+            expr_codegen(el);
+            // ? How do we handle global values.
+            //! more complicated when we have arrays.
+            fprintf(outfile, "\tMOVQ %%%s, %%%s", scratch_name(er->reg),scratch_name(el->reg));
+            scratch_free(er->reg);
+            break;
+        case EXPR_TERNARY1:
+            expr_codegen(el);
+            l1 = label_create();
+            l2 = label_create();
+            // test for condition
+            fprintf(outfile, "\tCMPQ $0, %%%s\n", scratch_name(el->reg));
+            fprintf(outfile, "\tJE %s\n", label_name("", l1));
+
+            // is 1, so use first
+            expr_codegen(er->left);
+            fprintf(outfile, "\tMOVQ %%%s, %%%s\n", scratch_name(er->left->reg), scratch_name(el->reg)); // move first value into reg
+            scratch_free(er->left->reg);
+            fprintf(outfile, "\tJMP %s\n", label_name("", l2));
+
+            // is 0 so use second
+            fprintf(outfile, "%s:\n", label_name("", l1));
+            expr_codegen(er->right);
+            fprintf(outfile, "\tMOVQ %%%s, %%%s\n", scratch_name(er->right->reg), scratch_name(el->reg)); // move second value into reg
+            scratch_free(er->right->reg);
+            fprintf(outfile, "%s:\n", label_name("", l2));
+
+            e->reg = el->reg;
+            break;
+        case EXPR_TERNARY2:
+            printf("codegen error> should not reach ternary2 from expr_codegen itself\n");
+            exit(1);
+        case EXPR_BRACE:
+            // just send the first value?
+            expr_codegen(el);
+            e->reg = el->reg;
+            break;
+        case EXPR_ID:
+            // just alloc the reg and move into reg
+            e->reg = scratch_alloc();
+            if ((e->symbol->type->kind == TYPE_ARRAY || e->symbol->type->kind == TYPE_STRING) && e->symbol->kind == SYMBOL_GLOBAL)
+                fprintf(outfile, "\tLEA %s, %%%s\n", symbol_codegen(e->symbol), scratch_name(e->reg));
+            else
+                fprintf(outfile, "\tMOVQ %s, %%%s\n", symbol_codegen(e->symbol), scratch_name(e->reg));
+            break;
+        case EXPR_INT_LIT:
+            e->reg = scratch_alloc();
+            fprintf(outfile, "\tMOVQ $%d, %%%s\n", e->literal_value, scratch_name(e->reg));
+            break;
+        case EXPR_BOOL_LIT:
+            e->reg = scratch_alloc();
+            fprintf(outfile, "\tMOVQ $%d, %%%s\n", e->literal_value, scratch_name(e->reg));
+            break;
+        case EXPR_CHAR_LIT:
+            e->reg = scratch_alloc();
+            fprintf(outfile, "\tMOVQ $%d, %%%s\n", e->literal_value, scratch_name(e->reg));
+            break;
+        case EXPR_STR_LIT: {
+            // create a string in data section
+            int label = label_create();
+            fprintf(outfile, ".data\n%s:\n\t.string\t", label_name("S", label));
+            expr_unescape_string(e->string_literal, outfile);
+            fprintf(outfile, "\n");
+            // continue back in text section
+            fprintf(outfile, ".text\n");
+            // move address of string into reg
+            e->reg = scratch_alloc();
+            fprintf(outfile, "\tLEA %s, %%%s\n", label_name("S", label), scratch_name(e->reg));
+            break;
+        }
+        case EXPR_GROUP:
+            expr_codegen(el);
+            break;
+        default:
+            break;
+
+
+    }
+    return;
+
+}
+
+void expr_compare ( struct expr* e ) {
+    expr_codegen(e->left);
+    expr_codegen(e->right);
+    int l1 = label_create();
+    int l2 = label_create();
+    fprintf(outfile, "\tCMPQ %%%s, %%%s\n", scratch_name(e->right->reg), scratch_name(e->left->reg));
+    switch (e->kind) {
+        case EXPR_GT:
+            fprintf(outfile, "\tJG %s\n", label_name("", l1));
+            break;
+        case EXPR_LT:
+            fprintf( outfile, "\tJL %s\n", label_name("", l1));
+            break;
+        case EXPR_GTE:
+            fprintf(outfile, "\tJGE %s\n", label_name("", l1));
+            break;
+        case EXPR_LTE:
+            fprintf(outfile, "\tJLE %s\n", label_name("", l1));
+            break;
+        case EXPR_EQ:
+            fprintf(outfile, "\tJE %s\n", label_name("", l1));
+            break;
+        case EXPR_NOT_EQ:
+            fprintf(outfile, "\tJNE %s\n", label_name("", l1));
+            break;
+        default:
+            printf("codegen error> %d this should not happen\n", e->kind);
+            exit(1);
+    }
+    // failure to pass test
+    fprintf(outfile, "\tMOVQ $0, %%%s\n", scratch_name(e->left->reg));
+    fprintf(outfile, "\tJMP %s\n", label_name("", l2));
+
+    // passed test
+    fprintf(outfile, "%s:\n", label_name("", l1));
+    fprintf(outfile, "\tMOVQ $1, %%%s\n", scratch_name(e->left->reg));
+    fprintf(outfile, "%s:\n", label_name("", l2));
+
+    scratch_free(e->right->reg);
+    e->reg = e->left->reg;
+}
+
+void expr_call_func( struct expr* fcall ) {
+    // iterate through once to solve everything and put them in a scratch reg
+    struct expr* cur = fcall->right;
+    while (cur) {
+        expr_codegen(cur->left);
+        cur = cur->right;
+    }
+    // iterate and push into reg
+    int i = 0;
+    cur = fcall->right;
+    while (cur) {
+        if (i >= MAX_ARGS) {
+            printf("codegen error> Function had too many arguments MAX = 6\n");
+            exit(1);
+        }
+        // move into arg reg
+        fprintf(outfile, "\tMOVQ %%%s, %%%s\n", scratch_name(cur->left->reg), arg_reg[i]);
+        // free the scratch reg
+        scratch_free(cur->left->reg);
+        cur = cur->right;
+        i++;
+    }
+    // no float regs
+    fprintf(outfile, "\tMOVQ $0, %%rax\n");
+
+    // push caller save reg
+    fprintf(outfile, "\tPUSHQ %%r10\n\tPUSHQ %%r11\n");
+    // call func
+    fprintf(outfile, "\tCALL %s\n", fcall->left->name);
+    // pop caller save reg
+    fprintf(outfile, "\tPOPQ %%r11\n\tPOPQ %%r10\n");
+
+    // retrieve a reg
+    fcall->reg = scratch_alloc();
+    fprintf(outfile, "\tMOVQ %%rax, %%%s\n", scratch_name(fcall->reg));
+
 }

@@ -1,0 +1,10 @@
+/* negation */
+
+main: function integer () = {
+
+    x: integer = -10;
+    y: integer = 10;
+    print x, " | ", -10, "\n";
+    print x + y , " | ", 0, "\n";
+    return 0;
+}

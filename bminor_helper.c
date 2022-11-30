@@ -215,3 +215,13 @@ int typecheck(void) {
     }
     return 1;
 }
+
+
+int codegen(void) {
+    
+    if (!typecheck()) {
+        decl_codegen_global(ast_head);
+        return 0; 
+    }
+    return 1;
+}

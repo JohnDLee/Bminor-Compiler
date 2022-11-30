@@ -12,8 +12,8 @@
 
 int main(int argc, char* argv[]){
     
-    if (argc != 3) {
-        fprintf(stderr, "bminor> invalid input: incorrect number of arguments\nusage:\n\t./bminor -<scan|parse|print|resolve|typecheck> <program.bminor>\n");
+    if (argc < 3) {
+        fprintf(stderr, "bminor> invalid input: incorrect number of arguments\nusage:\n\t./bminor -<scan|parse|print|resolve|typecheck> <program.bminor> <outfile.s>\n");
         return 1;
     }
 
@@ -42,6 +42,11 @@ int main(int argc, char* argv[]){
     // type check
     else if (strcmp(argv[1], "-typecheck") == 0) {
         return typecheck();
+    }
+    // codegen
+    else if (strcmp(argv[1], "-codegen") == 0) {
+        outfile = fopen(argv[3], "w");
+        return codegen();
     }
     else {
         fprintf(stderr, "bminor> you must provide one of (-print, -parse, -scan) as a flag\n");

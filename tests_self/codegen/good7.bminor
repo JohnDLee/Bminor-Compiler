@@ -1,0 +1,12 @@
+/* basic ^% expressions */
+
+x: integer = 1;
+y: integer = 2;
+
+main: function integer () = {
+    x: integer = 2;
+    z: integer = x ^ y;
+    q: integer = x % y;
+    print z, " | ", 4, '\n', q, " | ", 0, '\n';
+    return 0;
+}

@@ -18,6 +18,8 @@ void scope_enter();
 void scope_exit();
 // return scope of first value
 int scope_level();
+// return number of vars in scope
+int scope_num_vars();
 
 // adds an entry to topmost ht
 void scope_bind( const char *name, struct symbol *sym );

@@ -1,0 +1,11 @@
+/* basic ++/-- expressions */
+
+y: integer = 20;
+
+main: function integer () = {
+    x: integer = 10;
+    // one local one global
+    print x++, " | ", 11, '\n', y++, " | ", 21, '\n';
+    print x--, " | ", 10, '\n', y--, " | ", 20, '\n';
+    return 0;
+}

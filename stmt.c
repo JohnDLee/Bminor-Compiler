@@ -217,6 +217,7 @@ void stmt_typecheck( struct stmt *s , struct decl *func) {
         case STMT_RETURN: {
             struct type *ret_type = func->type->subtype;
             struct type *e = expr_typecheck(s->expr);
+            if (!e) break; // no return value.
             // if return is auto, throw error
             if (e->kind == TYPE_AUTO) {
                 fprintf(stdout, "typecheck error> return type of function (%s) cannot be auto.\n", func->name);
@@ -254,3 +255,67 @@ void stmt_typecheck( struct stmt *s , struct decl *func) {
 
 
 
+void stmt_codegen(struct stmt *s, const char* func_epilogue) {
+    if (!s) return;
+
+    switch (s->kind) {
+        case STMT_BLOCK:
+            stmt_codegen(s->body, func_epilogue);
+            break;
+        case STMT_RETURN:
+            if (s->expr) { 
+                // expr exists, so move expr reg into %rax
+                expr_codegen(s->expr);
+                fprintf(outfile, "\tMOVQ %%%s, %%rax\n", scratch_name(s->expr->reg) );
+                scratch_free(s->expr->reg);
+            }
+            fprintf(outfile, "\tJMP %s\n", func_epilogue);
+            break;
+        case STMT_PRINT:{
+            struct expr* cur = s->expr;
+            while (cur) {
+                struct type* t = expr_typecheck(cur->left);
+                struct expr* fcall;
+                switch (t->kind) {
+                    case TYPE_BOOLEAN:
+                        // wrap as print_bool
+                        fcall = expr_create(EXPR_FCALL, expr_create_name("print_boolean"), expr_create(EXPR_ARG, cur->left, NULL, 8), 8);
+                        break;
+                    case TYPE_CHARACTER:
+                        fcall = expr_create(EXPR_FCALL, expr_create_name("print_character"), expr_create(EXPR_ARG, cur->left, NULL, 8), 8);
+                        break;
+                    case TYPE_INTEGER:
+                        fcall = expr_create(EXPR_FCALL, expr_create_name("print_integer"), expr_create(EXPR_ARG, cur->left, NULL, 8), 8);
+                        break;
+                    case TYPE_STRING:
+                        fcall = expr_create(EXPR_FCALL, expr_create_name("print_string"), expr_create(EXPR_ARG, cur->left, NULL, 8), 8);
+                        break;
+                    default:
+                        printf("codegen error> an unprintable type was found in a print statement.");
+                        exit(1);
+                }
+
+                expr_call_func(fcall);
+                scratch_free(fcall->reg);
+                cur = cur->right;
+            }
+            break;
+        }
+        case STMT_DECL:
+            decl_codegen_local(s->decl);
+            break;
+        case STMT_EXPR:
+            scratch_free(s->expr->reg);
+            break;
+        case STMT_FOR:
+            break;
+        case STMT_IF_ELSE:
+            break;
+        default:
+            fprintf(stdout, "codegen error> Invalid Statement type\n");
+            exit(1);
+    }
+
+    stmt_codegen(s->next, func_epilogue);
+
+}
