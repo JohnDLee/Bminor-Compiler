@@ -18,7 +18,7 @@ maze: maze.o library.o
 
 %.s: %.bminor
 	echo "*** Make sure to put bminor in your PATH! ***"
-	bminor -codegen $< $@
+	./../../bminor -codegen $< $@
 
 clean:
 	rm -f *.o *.s *~ fibonnacci bounce maze

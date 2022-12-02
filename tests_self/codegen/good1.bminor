@@ -3,7 +3,6 @@ x: integer = 1;
 y: char = '\n';
 w: boolean = true;
 z: string = "compilers\n";
-a: array [2] string = {"abc\n", "cde"};
 b: array [3] integer = {1,2,3};
 
 main: function integer () = {

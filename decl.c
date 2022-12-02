@@ -60,7 +60,6 @@ void decl_print( struct decl *d, int indent ) {
 
 void decl_resolve( struct decl *d ) {
     if (!d) return;
-
     // create symbol and bind
     d->symbol = symbol_create( scope_level() > 1 ? SYMBOL_LOCAL : SYMBOL_GLOBAL, d->type, d->name);
     
@@ -111,6 +110,7 @@ void decl_resolve( struct decl *d ) {
 
     // function
     if (d->type->kind == TYPE_FUNCTION) {
+
         // prototype
         if (d->symbol->prototype) {
             scope_enter();
@@ -122,16 +122,17 @@ void decl_resolve( struct decl *d ) {
             scope_enter();
             param_list_resolve(d->type->params);
             stmt_resolve(d->code);
-            if (tmp) // previous prototype exists
+            if (tmp) { // previous prototype exists
                 tmp->total = scope_num_vars();
-            else // definition is the reference
+                d->symbol = tmp;
+            } else { // definition is the reference
                 d->symbol->total = scope_num_vars();
+            }
             scope_exit();
         }
         
     }
     
-
     // resolve next declaration
     decl_resolve(d->next);
 }
@@ -235,52 +236,60 @@ void decl_codegen_global( struct decl *d) {
     //Since it's global, you can guarentee these are literals.
     switch (d->type->kind) {
         case TYPE_BOOLEAN:
-            d->value = d->value->left; // I did something funky with EXPR_ARGS.
+            d->value = d->value ? d->value->left : d->value; // I did something funky with EXPR_ARGS.
             fprintf(outfile, ".data\n");
             fprintf(outfile, ".globl %s\n", d->name);
             fprintf(outfile, "%s:\n\t.quad %d\n", d->name, d->value ? d->value->literal_value : 0);
             break;
         case TYPE_INTEGER:
-            d->value = d->value->left; // I did something funky with EXPR_ARGS.
+            d->value = d->value ? d->value->left : d->value; // I did something funky with EXPR_ARGS.
             fprintf(outfile, ".data\n");
             fprintf(outfile, ".globl %s\n", d->name);
             fprintf(outfile, "%s:\n\t.quad %d\n",d->name, d->value ? d->value->literal_value : 0);
             break;
         case TYPE_CHARACTER:
-            d->value = d->value->left; // I did something funky with EXPR_ARGS.
+            d->value = d->value ? d->value->left : d->value; // I did something funky with EXPR_ARGS.
             fprintf(outfile, ".data\n");
             fprintf(outfile, ".globl %s\n", d->name);
             fprintf(outfile, "%s:\n\t.quad %d\n", d->name, d->value ? d->value->literal_value : '\0');
             break;
         case TYPE_STRING:
-            d->value = d->value->left; // I did something funky with EXPR_ARGS.
+            d->value = d->value ? d->value->left : d->value; // I did something funky with EXPR_ARGS.
             fprintf(outfile, ".data\n");
-            fprintf(outfile, ".globl %s\n", d->name);
-            fprintf(outfile, "%s:\n\t.string ",d->name);
-            expr_unescape_string(d->value->string_literal, outfile);
-            fprintf(outfile, "\n");
-            break;
-        case TYPE_ARRAY:
-            if (d->type->subtype->kind == TYPE_ARRAY) {
-                printf("codegen error> Array not implemented: bminor does not support arrays of arrays.\n");
-                exit(1);
+            int l;
+            if (d->value) {
+                l = label_create();
+                fprintf(outfile, "%s:\n\t.string ", label_name("S", l));
+                expr_unescape_string(d->value->string_literal, outfile);
+                fprintf(outfile, "\n");
             }
-            fprintf(outfile, ".data\n");
             fprintf(outfile, ".globl %s\n", d->name);
             fprintf(outfile, "%s:\n", d->name);
-            struct expr* arg = d->value->left;
-            while (arg) {
-                if (d->type->subtype->kind == TYPE_STRING) {
-                    
-                    fprintf(outfile, "\t.string ");
-                    expr_unescape_string(arg->left->string_literal, outfile);
-                    fprintf(outfile, "\n");
-                }
-                else {
-                    fprintf(outfile, "\t.quad %d\n", arg->left->literal_value);
-                }
-                arg = arg->right;
+            fprintf(outfile, "\t.quad %s\n", d->value ? label_name("S", l) : "0");
+
+            break;
+        case TYPE_ARRAY:
+            if (d->type->subtype->kind != TYPE_INTEGER) {
+                printf("codegen error> Array not implemented: bminor does not support arrays of non-integers.\n");
+                exit(1);
             }
+            else { // all other types
+                fprintf(outfile, ".data\n");
+                int l;
+                if (d->value) {
+                    l = label_create();
+                    fprintf(outfile, "%s:\n", label_name("S", l));
+                    struct expr* arg = d->value->left;
+                    while (arg) {
+                        fprintf(outfile, "\t.quad %d\n", arg->left->literal_value);
+                        arg = arg->right;
+                    }
+                }
+                fprintf(outfile, ".globl %s\n", d->name);
+                fprintf(outfile, "%s:\n", d->name);
+                fprintf(outfile, "\t.quad %s\n", d->value ? label_name("S", l) : "0");
+            }
+            break;
         default:
             break;
     }
@@ -338,7 +347,6 @@ void decl_codegen_global( struct decl *d) {
         fprintf(outfile, "\tRET\n");
     }
     
-
     decl_codegen_global(d->next);
 
 }
@@ -349,33 +357,35 @@ void decl_codegen_local(struct decl *d) {
     // generate code for the expr && value is in 
 
     // * Expression version
-    expr_codegen(d->value);
-    switch (d->type->kind) {
-        case TYPE_BOOLEAN:
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
-            scratch_free(d->value->reg);
-            break;
-        case TYPE_INTEGER:
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
-            scratch_free(d->value->reg);
-            break;
-        case TYPE_CHARACTER:
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
-            scratch_free(d->value->reg);
-            break;
-        case TYPE_STRING:
-            // move the address into stack
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
-            scratch_free(d->value->reg);
-            break;
-        case TYPE_ARRAY:
-            // move the address of first point into stack
-            //! incomplete, d->value->Reg will not be set.
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
-            scratch_free(d->value->reg);
-            break;
-        default:
-            printf("codegen error> Invalid Decl Type found.\n");
-            exit(1);
+    if (d->value) {
+        expr_codegen(d->value);
+        switch (d->type->kind) {
+            case TYPE_BOOLEAN:
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+                scratch_free(d->value->reg);
+                break;
+            case TYPE_INTEGER:
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+                scratch_free(d->value->reg);
+                break;
+            case TYPE_CHARACTER:
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+                scratch_free(d->value->reg);
+                break;
+            case TYPE_STRING:
+                // move the actually mem loc into reg rather than address
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+                scratch_free(d->value->reg);
+                break;
+            case TYPE_ARRAY:
+                // move the address of first point into stack
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(d->value->reg), symbol_codegen(d->symbol));
+                scratch_free(d->value->reg);
+                break;
+            default:
+                printf("codegen error> Invalid Decl Type found.\n");
+                exit(1);
+        }
     }
+    decl_codegen_local(d->next);
 }

@@ -3,15 +3,15 @@
 main: function integer () = {
     return 0;
 }
-s: function string () = {
+s: function string (x:integer, y:integer) = {
     return "LOL\n";
 }
-x: function char () = {
+x: function char (a:integer, b:integer) = {
     return '\n';
 }
-y: function boolean () = {
+y: function boolean (c:integer, d:integer) = {
     return true;
 }
-z: function integer () = {
+z: function integer (e:integer, f:integer) = {
     return 1;
 }

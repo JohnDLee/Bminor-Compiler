@@ -1,0 +1,38 @@
+/* Control Flow */
+
+
+
+main: function integer () = {
+
+    // normal
+    i: integer = 0;
+    for (;i <  100; i++) { // initial case here
+        // print positive versions
+        print i, '\n';
+    }
+    // nested
+    j: integer = 0;
+    for (;j<  100; j++) { // initial case here
+        k: integer = 0;
+        for (;k < 100; k++) {
+            print j, ' ', k, '\n';
+        }
+    }
+    // don't run infinite loop versions with make codegen_test since they will cause trouble but they work
+    /*
+    for (;; i++) { // initial case here
+        // print positive versions
+        print i, '\n';
+    }
+    
+    for (;;) { // initial case here
+        // print positive versions
+        print i, '\n';
+    }
+    for (;i<101;) { // initial case here
+        // print positive versions
+        print i, '\n';
+    }*/
+    return 0;
+
+}

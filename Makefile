@@ -108,8 +108,9 @@ library.o: library.c
 
 codegen_test: bminor
 	./tests_self/codegen/run_all_tests.sh
+	./tests/codegen/run_all_tests.sh
 
-all_tests: typecheck_test resolve_test print_test parse_test scan_test
+all_tests:  scan_test parse_test print_test  resolve_test typecheck_test codegen_test
 
 clean:
 # scanner
@@ -127,5 +128,6 @@ clean:
 # Code Gen
 	rm -rf scratch.o label.o
 	rm -rf tests_self/codegen/*.exe tests_self/codegen/*.s tests_self/codegen/*.out tests_self/codegen/library.o
+	rm -rf tests/codegen/*.exe tests/codegen/*.s tests/codegen/*.out tests/codegen/library.o
 # bminor
 	rm -rf bminor

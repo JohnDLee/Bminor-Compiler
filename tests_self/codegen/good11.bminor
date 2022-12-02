@@ -2,12 +2,15 @@
 
 arr: array [3] integer = {1,2,3};
 s: string = "string\n";
+
+
 main: function integer () = {
 
     // address (LEA)
     x: array [3] integer = arr; 
     y: string = s;
     z: string = "LOL\n";
+
 
     // not address (MOVQ)
     t: integer = 6;

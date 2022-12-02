@@ -132,7 +132,7 @@ void stmt_resolve( struct stmt *s ) {
             expr_resolve(s->next_expr);
             scope_enter();
             stmt_resolve(s->body);
-            scope_enter();
+            scope_exit();
             break;
         case STMT_PRINT:
             expr_resolve(s->expr);
@@ -305,11 +305,63 @@ void stmt_codegen(struct stmt *s, const char* func_epilogue) {
             decl_codegen_local(s->decl);
             break;
         case STMT_EXPR:
+            expr_codegen(s->expr);
             scratch_free(s->expr->reg);
             break;
-        case STMT_FOR:
+        case STMT_FOR: {
+            int top = label_create();
+            int done = label_create();
+            
+            // do init expr if exists.
+            if (s->init_expr){
+                expr_codegen(s->init_expr);
+                scratch_free(s->init_expr->reg);
+            }
+            
+            // set a label to go back to
+            fprintf(outfile, "%s:\n", label_name("", top));
+            //run the condition check if it exists, otherwise it skips this step
+            if (s->expr) {
+                expr_codegen(s->expr);
+                fprintf(outfile, "\tCMPQ $0, %%%s\n", scratch_name(s->expr->reg));
+                scratch_free(s->expr->reg);
+                // jump to end if it is equal (false)
+                fprintf(outfile, "\tJE %s\n", label_name("", done));
+            }
+            // otherwise (true) perform for body
+            stmt_codegen(s->body, func_epilogue);
+            // end of loop, perform inc
+            if (s->next_expr) {
+                expr_codegen(s->next_expr);
+                scratch_free(s->next_expr->reg);
+            }
+            // jump back to condition check
+            fprintf(outfile, "\tJMP %s\n", label_name("",top));
+            // label to continue
+            fprintf(outfile, "%s:\n", label_name("", done));
             break;
-        case STMT_IF_ELSE:
+        }
+        case STMT_IF_ELSE: {
+            int else_label = label_create();
+            int done_label = label_create();
+            // check the if expr
+            expr_codegen(s->expr);
+            fprintf(outfile, "\tCMPQ $0, %%%s\n", scratch_name(s->expr->reg));
+            scratch_free(s->expr->reg);
+            // if false, go to else
+            fprintf(outfile, "\tJE %s\n", label_name("", else_label));
+            // otherwise continue with if
+            stmt_codegen(s->body, func_epilogue);
+            fprintf(outfile, "\tJMP %s\n", label_name("", done_label));
+            
+            // else
+            fprintf(outfile, "%s:\n", label_name("", else_label));
+            // if no else exits, then nothing will print anyways.
+            stmt_codegen(s->else_body, func_epilogue);
+            fprintf(outfile, "%s:\n", label_name("", done_label));
+
+        }
+
             break;
         default:
             fprintf(stdout, "codegen error> Invalid Statement type\n");

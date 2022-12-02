@@ -1,0 +1,24 @@
+/* function calls */
+
+ 
+
+
+f: function integer (a1: integer, b1: boolean, c1: char, s1: string);
+
+t: function char (a1: integer, b1: boolean, c1: char, s1: string) = {
+    return c1;
+}
+
+main: function integer () = {
+    a: integer = 10;
+    b: boolean = false;
+    c: char = 'c';
+    s: string = "string";
+    return f(a, b, t(a, b, c, s), s);
+}
+
+f: function integer (a: integer, b: boolean, c: char, s: string) = {
+    z: integer = 10;
+    print a, '\n', b, '\n', c, '\n', s, '\n';
+    return 0;
+}

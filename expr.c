@@ -433,8 +433,9 @@ struct type * expr_typecheck( struct expr *e ) {
                 break;
             case EXPR_INCREMENT:
             case EXPR_DECREMENT:
+                
                 if (e->left->kind != EXPR_ID && e->left->kind != EXPR_INDEX) {
-                    fprintf(stdout, "typecheck error> %s can only be called on values which are stored.\n", expr_action_str(e->kind));
+                    fprintf(stdout, "typecheck error> %s can only be called on values which are stored in memory (variables or array locations).\n", expr_action_str(e->kind));
                     type_err = 1;
                 }
                 if (lt->kind != TYPE_INTEGER) {
@@ -554,6 +555,10 @@ struct type * expr_typecheck( struct expr *e ) {
                 }
                 break;
             case EXPR_ASSIGN:
+                if (e->left->kind != EXPR_ID && e->left->kind != EXPR_INDEX) {
+                    fprintf(stdout, "typecheck error> assignment can only be done to values which are stored in memory (variables or array locations).\n");
+                    type_err = 1;
+                }
                 // Deal with Auto
                 if (!type_equals(lt, rt)) {
                     expr_err_msg(e, lt, rt, "the same type");
@@ -881,20 +886,33 @@ void expr_codegen(struct expr* e) {
             e->reg = er->reg;
             break;
         case EXPR_INCREMENT:
-            //! MAKE SURE THIS WORKS WITH ASSIGN.s
             expr_codegen(el);
-            // destructively increment
-            fprintf(outfile, "\tINCQ %%%s\n", scratch_name(el->reg));
-            // update value in appropriate saved location
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(el->reg), symbol_codegen(el->symbol));
+            if (el->kind == EXPR_ID) {
+                // update value in appropriate saved location
+                fprintf(outfile, "\tADDQ $1, %s\n", symbol_codegen(el->symbol));
+            } else if (el->kind == EXPR_INDEX) {
+                // update index in array
+                expr_codegen(el->left);
+                expr_codegen(el->right);
+                fprintf(outfile, "\tADDQ $1, (%%%s,%%%s,8)\n", scratch_name(el->left->reg),scratch_name(el->right->reg));
+                scratch_free(el->right->reg);
+                scratch_free(el->left->reg);
+            }
             e->reg = el->reg;
             break;
         case EXPR_DECREMENT:
             expr_codegen(el);
-            // destructively increment
-            fprintf(outfile, "\tDECQ %%%s\n", scratch_name(el->reg));
-            // update value in appropriate saved location
-            fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(el->reg), symbol_codegen(el->symbol));
+            if (el->kind == EXPR_ID) {
+                // update value in appropriate saved location
+                fprintf(outfile, "\tSUBQ $1, %s\n", symbol_codegen(el->symbol));
+            } else if (el->kind == EXPR_INDEX) {
+                // update index in array
+                expr_codegen(el->left);
+                expr_codegen(el->right);
+                fprintf(outfile, "\tSUBQ $1, (%%%s,%%%s,8)\n", scratch_name(el->left->reg),scratch_name(el->right->reg));
+                scratch_free(el->right->reg);
+                scratch_free(el->left->reg);
+            }
             e->reg = el->reg;
             break;
         case EXPR_INDEX:
@@ -904,8 +922,9 @@ void expr_codegen(struct expr* e) {
             scratch_free(er->reg); 
             e->reg = el->reg;
             break;
-        // case EXPR_FCALL:
-        //     return "call function";
+        case EXPR_FCALL:
+            expr_call_func( e );
+            break;
         case EXPR_ARG:
             expr_codegen(el);
             e->reg = el->reg;
@@ -922,8 +941,8 @@ void expr_codegen(struct expr* e) {
             struct expr* fcall = expr_create(EXPR_FCALL, expr_create_name("integer_power"), expr_create(EXPR_ARG, el, expr_create(EXPR_ARG, er, NULL, 8), 8), 8);
             expr_call_func(fcall);
             e->reg = fcall->reg;
-        }
             break;
+        }
         case EXPR_MOD:
             expr_codegen(el);
             expr_codegen(er);
@@ -979,12 +998,21 @@ void expr_codegen(struct expr* e) {
             e->reg = el->reg;
             break;
         case EXPR_ASSIGN:
+            //! How to handle arrays & strings (for now just error) etc.
+            // codegen the rhs first.
             expr_codegen(er);
-            expr_codegen(el);
-            // ? How do we handle global values.
-            //! more complicated when we have arrays.
-            fprintf(outfile, "\tMOVQ %%%s, %%%s", scratch_name(er->reg),scratch_name(el->reg));
-            scratch_free(er->reg);
+            if (el->kind == EXPR_ID) {
+                // update value in appropriate saved location
+                fprintf(outfile, "\tMOVQ %%%s, %s\n", scratch_name(er->reg),symbol_codegen(el->symbol));
+            } else if (el->kind == EXPR_INDEX) {
+                // update index in array
+                expr_codegen(el->right);
+                expr_codegen(el->left);
+                fprintf(outfile, "\tMOVQ %%%s, (%%%s,%%%s,8)\n", scratch_name(er->reg), scratch_name(el->left->reg),scratch_name(el->right->reg));
+                scratch_free(el->right->reg);
+                scratch_free(el->left->reg);
+            }
+            e->reg = er->reg;
             break;
         case EXPR_TERNARY1:
             expr_codegen(el);
@@ -1020,10 +1048,7 @@ void expr_codegen(struct expr* e) {
         case EXPR_ID:
             // just alloc the reg and move into reg
             e->reg = scratch_alloc();
-            if ((e->symbol->type->kind == TYPE_ARRAY || e->symbol->type->kind == TYPE_STRING) && e->symbol->kind == SYMBOL_GLOBAL)
-                fprintf(outfile, "\tLEA %s, %%%s\n", symbol_codegen(e->symbol), scratch_name(e->reg));
-            else
-                fprintf(outfile, "\tMOVQ %s, %%%s\n", symbol_codegen(e->symbol), scratch_name(e->reg));
+            fprintf(outfile, "\tMOVQ %s, %%%s\n", symbol_codegen(e->symbol), scratch_name(e->reg));
             break;
         case EXPR_INT_LIT:
             e->reg = scratch_alloc();
@@ -1047,7 +1072,7 @@ void expr_codegen(struct expr* e) {
             fprintf(outfile, ".text\n");
             // move address of string into reg
             e->reg = scratch_alloc();
-            fprintf(outfile, "\tLEA %s, %%%s\n", label_name("S", label), scratch_name(e->reg));
+            fprintf(outfile, "\tLEAQ %s, %%%s\n", label_name("S", label), scratch_name(e->reg));
             break;
         }
         case EXPR_GROUP:

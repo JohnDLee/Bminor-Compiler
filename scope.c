@@ -8,12 +8,12 @@ int type_err = 0;
 
 void scope_enter() {
     struct ht_list *ht_node = (struct ht_list *) malloc (sizeof(struct ht_list));
-
+    
     // default ht
     ht_node->ht = hash_table_create(0, 0);
     // level
     ht_node->level = stack_top ? stack_top->level + 1 : 1; 
-    if (stack_top && stack_top->level > 2) {
+    if (stack_top && stack_top->level + 1 > 2) {
         // if the current top is not global or args, then keep track from prev
         ht_node->num_vars = stack_top->num_vars;
     } else {
