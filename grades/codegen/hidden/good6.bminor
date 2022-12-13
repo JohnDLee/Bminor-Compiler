@@ -1,0 +1,14 @@
+f: function boolean(b: boolean) = {
+	return !b;
+}
+
+x: integer = 4;
+
+main:function integer ()=
+{
+	y: integer = 10;
+	if (f(f(f(f(f(x <= y)))))) return 1;
+	else if (x < y - x*y) {
+		return 4;
+	} else return 2;
+}

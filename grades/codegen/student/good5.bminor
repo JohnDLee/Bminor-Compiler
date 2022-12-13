@@ -1,0 +1,12 @@
+/* basic *&/ expressions */
+
+x: integer = 10;
+y: integer = 20;
+
+main: function integer () = {
+    x: integer = 20;
+    z: integer = x * y;
+    q: integer = x / y;
+    print z, " | ", 400, '\n', q, " | ", 1, '\n';
+    return 0;
+}

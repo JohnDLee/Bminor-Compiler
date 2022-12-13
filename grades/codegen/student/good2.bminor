@@ -1,0 +1,17 @@
+// Returns + local literals
+
+main: function integer () = {
+    return 0;
+}
+s: function string (x:integer, y:integer) = {
+    return "LOL\n";
+}
+x: function char (a:integer, b:integer) = {
+    return '\n';
+}
+y: function boolean (c:integer, d:integer) = {
+    return true;
+}
+z: function integer (e:integer, f:integer) = {
+    return 1;
+}

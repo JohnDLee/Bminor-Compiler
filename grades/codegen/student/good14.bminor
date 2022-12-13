@@ -1,0 +1,18 @@
+/* ++/-- expressions with arrays & stmt_expr*/
+
+y: array [5] integer = {1, 1, 1,1,1};
+
+main: function integer () = {
+    x: array[5] integer = y;
+
+    z: integer = y[0]++;
+    y[1]++;
+    y[2]++;
+    y[1]--;
+    
+    print y[0], y[1],y[2],y[3],y[4], '\n';
+    print 21211, '\n';
+
+    print z, ' ', 1, '\n';
+    return 0;
+}

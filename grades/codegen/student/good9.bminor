@@ -1,0 +1,19 @@
+/* basic logical bool op expressions */
+
+main: function integer () = {
+    // not
+    print !true, " | ", "false", "\n";
+    print !false, " | ", "true", "\n";
+    // or
+    print true || false, " | ", "true", "\n";
+    print false || true, " | ", "true", "\n";
+    print false || false, " | ", "false", "\n";
+    print true || true, " | ", "true", "\n";
+    // and
+    print false && true, " | ", "false", "\n";
+    print false && false, " | ", "false", "\n";
+    print true && true, " | ", "true", "\n";
+    print true && false, " | ", "false", "\n";
+
+    return 0;
+}

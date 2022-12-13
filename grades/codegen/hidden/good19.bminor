@@ -1,0 +1,13 @@
+c1: integer = 1;
+c3: integer = 100;
+
+C: function integer(c1: integer, c2: integer) = {
+	c3: integer = 11;
+	c4: integer = 12;
+	c5: integer = 13;
+	return c1 + c2 + c3 + c4;
+}
+
+main: function integer() = {
+	return C(1, 2);
+}

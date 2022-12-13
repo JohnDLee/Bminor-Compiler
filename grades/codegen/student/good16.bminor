@@ -1,0 +1,27 @@
+/* Control Flow */
+
+
+
+main: function integer () = {
+
+    i: integer = 0;
+    for (;i <  100; i++) { // initial case here
+        // print positive versions
+        if (i < 50) {
+            t: integer = 0;
+            print i, '\n';
+        } else if (i < 75) {
+            t: integer = 0;
+            print -i, '\n';
+        } else {
+            t: integer = 0;
+            print t, '\n';
+        }
+
+        if (i == 80) 
+            return 1;
+
+    }
+    return 0;
+
+}

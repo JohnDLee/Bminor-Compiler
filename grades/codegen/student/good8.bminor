@@ -1,0 +1,17 @@
+/* basic comparisons expressions */
+
+x: integer = 1;
+y: integer = 2;
+
+main: function integer () = {
+    x: integer = 2;
+    print x >= 2, " | ", "true",'\n';
+    print x > 3, " | ", "false",'\n';
+    print y < 1, " | ", "false",'\n';
+    print y <= 2, " | ", "true",'\n';
+    print x == y, " | ", "true",'\n';
+    print x != y, " | ", "false",'\n';
+    z: integer = 1;
+    print z < 3, " | ", "true", '\n';
+    return 0;
+}

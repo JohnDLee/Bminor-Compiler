@@ -1,0 +1,12 @@
+collatz: function integer(n: integer, acc: integer) = {
+	print n, '\n';
+	if (n == 1) return acc;
+
+	if (n % 2 == 0) return collatz(n/2, acc + 1);
+	else return collatz(3*n + 1, acc + 1);
+}
+
+main:function integer ()=
+{
+	return collatz(27, 0);
+}

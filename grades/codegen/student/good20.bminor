@@ -1,0 +1,25 @@
+/* FizzBuzz+ */
+
+fb: function string (x: integer);
+
+main: function integer () = {
+    i: integer = 0;
+    for (i = 0; i < 100; i++) {
+        print i, ' ', fb(i), '\n';
+    }
+    return 0;
+}
+
+fb: function string (x: integer) = {
+    t: integer;
+    if (x % 3 == 0 && x % 5 == 0) {
+        return "fizzbuzz";
+    } else if (x % 5 == 0) {
+        return "buzz";
+    } else if (x % 3 == 0) {
+        return "fizz";
+    } else {
+        return "PLUS";
+    }
+
+}

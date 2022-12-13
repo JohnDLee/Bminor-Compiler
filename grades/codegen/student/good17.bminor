@@ -1,0 +1,37 @@
+/* Assignments */
+
+y: array [5] integer = {0, 0, 0, 0, 0};
+p: integer;
+s: string;
+q: string = "test_global\n";
+
+main: function integer () = {
+
+    // normal
+    i: integer ;
+    i = 0;
+    print i,' ', 0, '\n';
+    i++;
+    p = i;
+    print p, ' ', 1, '\n';
+
+
+    tmp: string = "test_local\n";
+    slocal: string;
+    slocal = tmp;
+    print slocal;
+    slocal = q;
+    print slocal;
+    slocal = "string\n";
+    print slocal;
+
+    s = tmp;
+    print s;
+    s = q;
+    print s;
+    s = "string\n";
+    print s;
+
+    return 0;
+
+}

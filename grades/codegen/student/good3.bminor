@@ -1,0 +1,9 @@
+// print expressions
+
+x: integer = 10;
+
+main: function integer () = {
+
+    print "Hello\n", x,'\n', 20,'\n', 'c', '\n', true, '\n';
+    return 0;
+}
