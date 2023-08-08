@@ -1,5 +1,5 @@
-Starter Code for BMinor Project (John Lee)
--------------------------------
+BMinor Compiler - Compilers Project Fall 2022 by John Lee
+---------------------------------------------------------
 
 This directory contains the starter code for the BMinor compiler.
 Students in CSE 40243 are *required* to use these header files as the basis for your work.
